@@ -39,8 +39,6 @@
   }
   </script>
   <link rel="preconnect" href="https://use.typekit.net" crossorigin>
-  <!-- Where the backend API lives. Change this to the deployed API URL (it must allow this site's origin via CORS_ORIGIN). -->
-  <meta name="reach-api" content="http://localhost:4000/api">
   <!-- Adobe Fonts kit nyc5qch: Sets Grotesk M. Allowed domains are managed at fonts.adobe.com > Web Projects -->
   <link rel="stylesheet" href="https://use.typekit.net/nyc5qch.css">
   <link rel="stylesheet" href="css/site.css?v=20251020f">
@@ -50,7 +48,7 @@
     document.documentElement.classList.add('js', 'is-loading');
     setTimeout(function () { document.documentElement.classList.remove('is-loading'); }, 15000);
   </script>
-</head>
+<script id="wix-site-script" src="https://manage.wix.com/_api/headless-business-setup/v1/headless-business/site-script.js" data-client-id="c28402c7-a0e5-4d0b-9ce9-03b6578555e1" async></script></head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
   <div class="progress" id="progress" aria-hidden="true"></div>
@@ -306,7 +304,7 @@
       </div>
     </section>
 
-    <!-- ===== Contact Us (POST /api/contact) ===== -->
+    <!-- ===== Contact Us (submitted to Wix Forms by js/forms.js) ===== -->
     <section class="section contact" id="contact" aria-labelledby="contact-title">
       <div class="wrap contact__grid">
         <div>
@@ -321,7 +319,7 @@
             <label class="field field--wide"><span>Email *</span><input name="email" type="email" autocomplete="email" required maxlength="200"></label>
             <label class="field field--wide"><span>Message</span><textarea name="message" rows="4" maxlength="2900"></textarea></label>
           </div>
-          <!-- Honeypot: humans never see this. The API silently drops submissions where it is filled. -->
+          <!-- Honeypot: humans never see this. forms.js silently drops submissions where it is filled. -->
           <div class="hp" aria-hidden="true"><label>Website <input name="website" tabindex="-1" autocomplete="off"></label></div>
           <p class="form__status" id="form-status" role="status" aria-live="polite"></p>
           <button class="btn" type="submit">Submit</button>
@@ -360,7 +358,6 @@
       </div>
       <div class="details__col">
         <p class="details__h" id="news-title">Stay Connected with Us</p>
-        <!-- TODO: not connected to anything yet; the API has no newsletter endpoint. -->
         <form id="newsletter-form" class="news" aria-labelledby="news-title" novalidate>
           <label class="field"><span class="visually-hidden">Enter Your Email</span><input name="email" type="email" placeholder="Enter Your Email" autocomplete="email" required></label>
           <label class="check"><input type="checkbox" name="optin"> <span>Yes, Subscribe me to newsletter</span></label>
@@ -380,6 +377,7 @@
 
   <script src="js/hero.js?v=20251020f"></script>
   <script src="js/main.js?v=20251020f"></script>
+  <script type="module" src="js/forms.js"></script>
   <script src="js/motion.js?v=20251020f"></script>
 </body>
 </html>
