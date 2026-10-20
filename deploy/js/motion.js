@@ -154,6 +154,19 @@
 
   // --- Service cards: each one tucks back a little as the next slides over it -------------------
   const cards = $$('.scard');
+  const svcHead = $('#services-head'), svcStack = $('#stack');
+  // --head-h: how tall the pinned copy is (the cards stick just below it). --tail: how far the last card travels once stuck,
+  // so the copy lets go exactly as the stacked cards do and nothing slides underneath it.
+  const sizeHead = () => {
+    const sec = svcHead.closest('.services');
+    sec.style.setProperty('--head-h', svcHead.offsetHeight + 'px');
+    // size the cards so the last one, stuck beneath the copy, ends fully on screen
+    const stepPx = (parseFloat(getComputedStyle(cards[1]).top) || 0) - (parseFloat(getComputedStyle(cards[0]).top) || 0);
+    const fit = innerHeight - svcHead.offsetHeight - stepPx * (cards.length - 1) - 24;
+    sec.style.setProperty('--card-h', Math.max(270, Math.min(420, fit)) + 'px');
+    sec.style.setProperty('--tail', (cards[0].offsetHeight + (parseFloat(getComputedStyle(cards[0]).marginBottom) || 0)) + 'px');
+  };
+  if (svcHead && svcStack) { sizeHead(); addEventListener('resize', sizeHead); addEventListener('load', sizeHead); }
 
   // --- The lid in the "Every Event Is Unique" band lifts as it scrolls through the middle -------------
   const serve = $('#serve');
@@ -162,16 +175,19 @@
   // --- Scroll-linked updates (one rAF-throttled pass) -----------------------------------------
   const nav = $('.nav');
   const progress = $('#progress');
+  const darkSections = $$('.marquee, .band, .testimonials');
   let lastScroll = scrollY, ticking = false;
   function update() {
     ticking = false;
     const vh = innerHeight, y = scrollY;
 
-    // progress line + nav (slides away while scrolling down, returns on the way up)
+    // progress line (the nav stays pinned to the top)
     const max = document.documentElement.scrollHeight - vh;
     progress.style.transform = `scaleX(${max > 0 ? clamp(y / max).toFixed(4) : 0})`;
-    if (y < 120 || y < lastScroll - 2) nav.classList.remove('nav--hidden');
-    else if (y > lastScroll + 2 && y > 240) nav.classList.add('nav--hidden');
+    // flip the nav text to white while a dark section sits behind it
+    const probe = nav.offsetHeight / 2;
+    const behind = darkSections.some((el) => { const r = el.getBoundingClientRect(); return r.top <= probe && r.bottom > probe; });
+    nav.classList.toggle('nav--light', behind);
     lastScroll = y;
 
     if (reduced) return;

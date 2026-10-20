@@ -54,13 +54,15 @@ a { color: inherit; }
   position: fixed; inset: 0 0 auto 0; z-index: 10;
   display: flex; align-items: center; gap: 1.5rem;
   padding: 1rem var(--pad);
-  background: linear-gradient(var(--bg), rgba(246, 249, 255, 0));
 }
-.nav--hidden { transform: translateY(-110%); }
 .nav__brand { font-weight: 200; font-size: 1.5rem; letter-spacing: .06em; text-decoration: none; margin-right: auto; }
 .nav__links { display: flex; gap: 1.75rem; }
 .nav__links a { text-decoration: none; font-size: .9rem; font-weight: 500; }
 .nav__links a:hover { color: var(--cobalt); }
+/* Over a dark section (marquee, band, testimonials) motion.js adds .nav--light so the text flips to white. */
+.nav__brand, .nav__links a { transition: color .3s ease; }
+.nav--light .nav__brand, .nav--light .nav__links a { color: #fff; }
+.nav--light .nav__links a:hover { color: rgba(255, 255, 255, .7); }
 
 .btn {
   display: inline-block; cursor: pointer; text-decoration: none; text-align: center;
@@ -198,6 +200,22 @@ section[id], footer[id] { scroll-margin-top: 3rem; }
   padding: clamp(1.5rem, 4vw, 3.2rem); border-radius: 28px;
   transform-origin: 50% 0; will-change: transform;
 }
+/* Desktop: the copy stays pinned at the top while the cards stack beneath it, so both are in view. */
+@media (min-width: 961px) {
+  /* the section's bottom padding sits outside .wrap, so the copy releases the moment the last card does */
+  .services .wrap { display: flow-root; } /* keeps the stack's negative bottom margin inside the wrap */
+  .services { padding-top: 0; padding-bottom: calc(5.5rem + var(--tail, 0px)); } /* = the gap above the eyebrow (the head's top padding) */
+  /* each card's bottom margin shrinks by one step down the stack, so all four release together on the way out and keep their staggered tops */
+  .scard { margin-bottom: calc((3 - var(--i)) * 1.2rem); }
+  .stack::after { content: ""; display: block; height: 8vh; } /* the hold: card four stays put briefly, then everything scrolls on */
+  .stack { padding-bottom: 0; margin-bottom: calc(-1 * var(--tail, 0px)); } /* shortens .wrap so the pinned copy lets go with the last card */
+  .services__head { position: sticky; top: 0; z-index: 1; background: var(--bg); padding: 5.5rem 0 1.25rem; }
+  .services .mega { font-size: clamp(2rem, 3.6vw, 3.4rem); }
+  .services__head .body { margin-top: 1rem; max-width: 52em; font-size: .95rem; }
+  .stack { margin-top: 1rem; }
+  .scard { top: calc(var(--head-h, 18rem) + var(--i) * 1.2rem); min-height: var(--card-h, min(46vh, 400px)); }
+}
+
 .scard__n { position: absolute; top: clamp(1.25rem, 3vw, 2.4rem); right: clamp(1.25rem, 3vw, 2.6rem); font-weight: 200; font-size: clamp(3.5rem, 9vw, 8rem); line-height: .8; letter-spacing: -.05em; opacity: .9; }
 .scard h3 { font-weight: 200; font-size: clamp(2rem, 5.2vw, 4.8rem); line-height: 1; letter-spacing: -.03em; max-width: 10em; }
 .scard .item__sub { margin-top: .75rem; }
