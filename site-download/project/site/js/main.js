@@ -19,3 +19,11 @@
   document.getElementById('year').textContent = new Date().getFullYear();
   onScroll();
 })();
+
+// Clicking the REACH wordmark returns to the hero at the very top of the page.
+document.querySelector('.nav__brand')?.addEventListener('click', (e) => {
+  e.preventDefault();
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
+  history.replaceState(null, '', location.pathname + location.search);
+});

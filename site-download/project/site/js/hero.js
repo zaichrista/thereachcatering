@@ -1,5 +1,5 @@
 // Hero animation: the A sits alone in the centre, R E C H fall in stretched and retract into the logo, one cloche
-// rises from the bottom of the page and its lid settles onto the plate, then "the" and "catering co." appear.
+// rises from the bottom of the page and its lid settles onto the plate, then "the" and "catering" appear.
 // Hover the cloche and it rattles. The cloche itself is fixed to the viewport: its plate stays at the bottom of the
 // screen but behind the page sections (see css/site.css), while the lid lives in the hero and scrolls away with it.
 (() => {
@@ -76,6 +76,20 @@
   const A = document.getElementById('A');
   const the = document.getElementById('the');
   const cat = document.getElementById('catering');
+  // Right-align "catering" so the ink of its last letter ends flush with the right edge of the H (x = 322.31).
+  const H_RIGHT = 322.31;
+  function alignCat() {
+    cat.setAttribute('text-anchor', 'end');
+    const cs = getComputedStyle(cat);
+    const ctx = document.createElement('canvas').getContext('2d');
+    ctx.font = `${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;
+    const m = ctx.measureText('g');
+    const bearing = m.width - m.actualBoundingBoxRight; // space between the g's ink and its advance edge
+    const y = cat.transform.baseVal.consolidate().matrix.f;
+    cat.setAttribute('transform', `translate(${(H_RIGHT + bearing).toFixed(2)} ${y})`);
+  }
+  alignCat();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(alignCat);
   const els = Object.fromEntries(LETTERS.map((k) => [k, document.getElementById(k)]));
   const plate = document.getElementById('plate');
   const dome = document.getElementById('lid');
@@ -83,7 +97,7 @@
 
   // The logo is drawn in SVG units; the viewBox is sized to the hero and centred on the A, so the A is always
   // dead centre and the logo keeps a fixed size (px per unit) however tall or wide the window is.
-  let viewTop = 0, logoBottom = 0; // logoBottom: screen y (px) of the bottom of "catering co." when the page is at the top
+  let viewTop = 0, logoBottom = 0; // logoBottom: screen y (px) of the bottom of "catering" when the page is at the top
   function layout() {
     const vw = svg.clientWidth || innerWidth, vh = svg.clientHeight || innerHeight;
     const scale = Math.min(vw * 0.78, 760) / 304; // the logo's ink is ~304 units wide
@@ -129,8 +143,8 @@
     domeSeat: 0.195, // how far the lid drops to sit on the plate, as a fraction of the image height
   };
   const FOOT_Y = 0.93;       // the plate's base sits at 93% of the viewport height
-  const LOGO_BOTTOM = 160;   // bottom of "catering co." (descenders included) in logo units
-  const KNOB_CLEARANCE = 12; // px of clear space between "catering co." and the top of the lid's knob
+  const LOGO_BOTTOM = 160;   // bottom of "catering" (descenders included) in logo units
+  const KNOB_CLEARANCE = 12; // px of clear space between "catering" and the top of the lid's knob
   plate.style.clipPath = `inset(${ART.split * 100}% 0 0 0)`;
   dome.style.clipPath = `inset(0 0 ${(1 - ART.split) * 100}% 0)`;
   dome.style.transformOrigin = '50% 64%'; // the lid rocks about its rim
@@ -139,7 +153,7 @@
   function placeCloche() {
     const vw = innerWidth, vh = innerHeight;
     c.footY = vh * FOOT_Y;
-    // Size the cloche so the top of its knob stops below "catering co.": the visible cloche (knob to plate base) is
+    // Size the cloche so the top of its knob stops below "catering": the visible cloche (knob to plate base) is
     // ~70.8% of the image height. Never bigger than 30% of the width (60% on phones).
     const room = c.footY - (logoBottom + KNOB_CLEARANCE);
     const fitW = (Math.max(room, 80) / 0.708) * 1.5 * ART.plateW;

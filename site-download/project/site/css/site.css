@@ -1,4 +1,4 @@
-/* The Reach Catering Co.
+/* The Reach Catering
    Stacking order (back to front):
      1  .plate-layer  the plate, fixed to the bottom of the screen but behind the sections: the second section
                     covers it, the transparent footer shows it again
@@ -57,7 +57,8 @@ a { color: inherit; }
   background: linear-gradient(var(--bg), rgba(246, 249, 255, 0));
 }
 .nav--hidden { transform: translateY(-110%); }
-.nav__brand { font-weight: 200; font-size: 1.5rem; letter-spacing: .06em; text-decoration: none; margin-right: auto; }
+.nav__brand { display: inline-flex; align-items: center; gap: .45rem; font-weight: 200; font-size: 1.5rem; letter-spacing: .06em; text-decoration: none; margin-right: auto; }
+.nav__logo { height: 2.1rem; width: auto; display: block; }
 .nav__links { display: flex; gap: 1.75rem; }
 .nav__links a { text-decoration: none; font-size: .9rem; font-weight: 500; }
 .nav__links a:hover { color: var(--cobalt); }
