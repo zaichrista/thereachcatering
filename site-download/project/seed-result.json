@@ -1,0 +1,50 @@
+{
+  "forms": [
+    {
+      "name": "Contact Us",
+      "formId": "ea11eeba-67bc-4ac0-9775-524d15f1138d",
+      "created": true,
+      "fields": [
+        {
+          "target": "full_name_w9mdnj",
+          "label": "Full Name"
+        },
+        {
+          "target": "phone_6x16uf",
+          "label": "Phone"
+        },
+        {
+          "target": "email_vq12dn",
+          "label": "Email"
+        },
+        {
+          "target": "message_wdohr1",
+          "label": "Message"
+        }
+      ],
+      "fieldsLive": 4,
+      "steps": 1,
+      "rules": 0,
+      "degraded": []
+    },
+    {
+      "name": "Newsletter",
+      "formId": "13812d54-ff20-4b22-a148-cdf7d1400c7c",
+      "created": true,
+      "fields": [
+        {
+          "target": "email_0mkge3",
+          "label": "Email"
+        },
+        {
+          "target": "yes_subscribe_me_to_newsletter_08lhcd",
+          "label": "Yes, Subscribe me to newsletter"
+        }
+      ],
+      "fieldsLive": 2,
+      "steps": 1,
+      "rules": 0,
+      "degraded": []
+    }
+  ]
+}

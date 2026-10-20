@@ -1,0 +1,61 @@
+:root {
+  --font: "sets-grotesk-m", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --bg: #ffffff;
+  --ink: #000000;
+
+  /* Timing: tweak these to taste */
+  --drop-stagger: 60ms;   /* delay between REACH letters */
+  --drop-duration: 1000ms; /* the fall, until the foot touches down */
+  --reach-stretch: 3.9;    /* how tall the letters stretch (x their normal height) */
+}
+
+* { box-sizing: border-box; margin: 0; }
+
+body { background: var(--bg); color: var(--ink); font-family: var(--font); }
+
+.hero {
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  overflow: hidden; /* clips the stretched letters while they're above the viewport */
+  position: relative;
+}
+
+.logo {
+  --size: clamp(5rem, 22vw, 20rem);   /* size of REACH; everything else scales from it */
+  position: relative;
+  display: grid;
+  grid-template-areas: "the" "reach" "cat";
+  font-size: var(--size);
+  line-height: 1;
+}
+
+.reach {
+  grid-area: reach;
+  font-weight: 200;
+  letter-spacing: 0.02em;
+  line-height: 0.74;           /* box bottom ~ baseline, so stretch pulls from the foot of the letter */
+  white-space: nowrap;
+  display: flex;
+}
+.reach .ch { display: inline-block; transform-origin: 50% 100%; will-change: transform; }
+
+.the, .catering {
+  font-weight: 600;
+  font-size: 0.27em;
+  line-height: 1;
+  white-space: nowrap;
+}
+.the      { grid-area: the; justify-self: start; margin-bottom: 0.15em; margin-left: calc(var(--size) * var(--the-k, 0)); }
+.catering { grid-area: cat; justify-self: end;   margin-top: 0.2em; margin-right: calc(var(--size) * var(--cat-k, 0)); }
+.catering .ch, .the .ch { display: inline-block; white-space: pre; }
+
+/* Before JS runs / if it fails, show the logo statically */
+.js .ch { opacity: 0; }
+
+.replay {
+  position: absolute; right: 1rem; bottom: 1rem;
+  font: 500 0.75rem var(--font); letter-spacing: .08em; text-transform: uppercase;
+  background: none; border: 1px solid currentColor; padding: .5em 1em; cursor: pointer; opacity: .4;
+}
+.replay:hover { opacity: 1; }

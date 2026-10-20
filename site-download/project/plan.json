@@ -1,0 +1,24 @@
+{
+  "forms": [
+    {
+      "name": "Contact Us",
+      "submitText": "Submit",
+      "thankYou": "Thank you! We have your message and will be in touch soon.",
+      "fields": [
+        { "label": "Full Name", "kind": "text", "required": true, "maxLength": 100 },
+        { "label": "Phone", "kind": "phone", "required": true, "country": "GB" },
+        { "label": "Email", "kind": "email", "required": true },
+        { "label": "Message", "kind": "textarea", "maxLength": 2900 }
+      ]
+    },
+    {
+      "name": "Newsletter",
+      "submitText": "Subscribe",
+      "thankYou": "Thank you for subscribing!",
+      "fields": [
+        { "label": "Email", "kind": "email", "required": true },
+        { "label": "Yes, Subscribe me to newsletter", "kind": "checkbox" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,418 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Reach Catering</title>
+  <!-- Adobe Fonts kit nyc5qch: Sets Grotesk M. Allowed domains are managed at fonts.adobe.com > Web Projects -->
+  <link rel="stylesheet" href="https://use.typekit.net/nyc5qch.css">
+  <style>
+    :root {
+      --bg: #f6f9ff; /* white with the faintest blue tinge */
+      --ink: #1d1d1b;
+      --font: "sets-grotesk-m", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; }
+    html, body { height: 100%; }
+    body { background: var(--bg); color: var(--ink); overflow: hidden; }
+
+    /* Full-viewport stage. The viewBox is set in JS so the A sits dead centre of the page. */
+    .stage { position: fixed; inset: 0; width: 100%; height: 100%; display: block; z-index: 2; }
+
+    /* Cloches: sit on a ground plane behind the logo. Placed and animated in JS. */
+    .cloches { position: fixed; inset: 0; z-index: 1; overflow: hidden; pointer-events: none; }
+    .cloches img { position: absolute; height: auto; visibility: hidden; user-select: none; }
+    .cloches .shadow {
+      position: absolute; opacity: 0;
+      background: radial-gradient(closest-side, rgba(22, 36, 78, .26) 0%, rgba(22, 36, 78, .15) 50%, rgba(22, 36, 78, 0) 100%);
+    }
+    .stage path { fill: var(--ink); }
+    .stage text { fill: var(--ink); font-family: var(--font); font-size: 30px; font-weight: 600; }
+
+    .replay {
+      position: fixed; right: 1rem; bottom: 1rem;
+      z-index: 3;
+      font: 500 0.75rem var(--font); letter-spacing: .08em; text-transform: uppercase;
+      color: var(--ink); background: none; border: 1px solid currentColor;
+      padding: .5em 1em; cursor: pointer; opacity: .4;
+    }
+    .replay:hover, .replay:focus-visible { opacity: 1; }
+  </style>
+</head>
+<body>
+  <div class="cloches" id="cloches" aria-hidden="true"></div>
+  <svg class="stage" id="stage" role="img" aria-label="The Reach Catering" xmlns="http://www.w3.org/2000/svg">
+    <!-- Every path below is in "ending point" coordinates (reach ending point.svg). -->
+    <g id="logo">
+      <path id="A" d="M160.71,45.49h2.2l28.6,79.99h-2.3l-8.1-22.7h-38.7l-8.1,22.7h-2.2l28.6-79.99ZM180.31,100.43l-18.5-51.99-18.6,51.99h37.1Z"/>
+      <g id="falling-letters">
+        <path id="R"/><path id="E"/><path id="C"/><path id="H"/>
+      </g>
+      <text id="the" transform="translate(18.51 37.57)" opacity="0">the</text>
+      <text id="catering" transform="translate(162.5 152.69)" opacity="0">catering</text>
+    </g>
+  </svg>
+  <button class="replay" type="button" aria-label="Replay animation">Replay</button>
+
+  <script>
+  (() => {
+    // --- Shapes ---------------------------------------------------------------------
+    // END = reach ending point.svg. FALL = reach falling.svg. Both have identical command
+    // structure, so we can morph by interpolating the numbers, which is what makes the
+    // strokes retract along their own outlines.
+    const END = {
+      R: "M18.51,45.49h24.2c4.8,0,8.98.86,12.55,2.59,3.57,1.73,6.32,4.18,8.25,7.35,1.93,3.18,2.9,6.8,2.9,10.88,0,5.57-1.67,10.14-5,13.7-3.33,3.57-7.4,5.75-12.2,6.53,4.07.55,7.47,2.12,10.2,4.71,2.73,2.59,4.47,6.39,5.2,11.41l1.7,12.35c.6,4.39,1.37,7.88,2.3,10.47h-2.3c-.93-2.67-1.67-6.04-2.2-10.12l-1.5-11.76c-.67-5.49-2.68-9.49-6.05-12-3.37-2.51-8.18-3.76-14.45-3.76h-21.4v37.64h-2.2V45.49ZM41.31,85.49c7.13,0,12.72-1.69,16.75-5.06,4.03-3.37,6.05-8.04,6.05-14s-1.97-10.45-5.9-13.7c-3.93-3.25-9.53-4.88-16.8-4.88h-20.7v37.64h20.6Z",
+      E: "M82.81,45.49h42.3v2.35h-40.1v35.76h36.9v2.35h-36.9v37.17h41.2v2.35h-43.4V45.49Z",
+      C: "M210.46,122.13c-4.83-3.02-8.63-7.61-11.4-13.76-2.77-6.16-4.15-13.78-4.15-22.88s1.38-16.72,4.15-22.88c2.77-6.15,6.57-10.74,11.4-13.76,4.83-3.02,10.42-4.53,16.75-4.53,7.67,0,14.13,2.25,19.4,6.76,5.27,4.51,8.5,11.47,9.7,20.88h-2.3c-1.13-8.23-4.08-14.49-8.85-18.76-4.77-4.27-10.78-6.41-18.05-6.41-5.93,0-11.13,1.43-15.6,4.29-4.47,2.86-7.95,7.2-10.45,13-2.5,5.8-3.75,12.94-3.75,21.41s1.25,15.61,3.75,21.41c2.5,5.8,6,10.14,10.5,13,4.5,2.86,9.72,4.29,15.65,4.29,7.47,0,13.63-2.23,18.5-6.7,4.87-4.47,7.8-10.98,8.8-19.53h2.4c-1.07,9.33-4.25,16.45-9.55,21.35-5.3,4.9-12.02,7.35-20.15,7.35-6.33,0-11.92-1.51-16.75-4.53Z",
+      H: "M320.11,85.96h-48.3v39.52h-2.2V45.49h2.2v38.11h48.3v-38.11h2.2v79.99h-2.2v-39.52Z",
+    };
+    const FALL = {
+      R: "M12.23,10.29h24.2c4.8,0,8.98.95,12.55,2.84,3.57,1.89,6.32,4.58,8.25,8.07,1.93,3.48,2.9,7.47,2.9,11.94,0,6.11-1.67,11.12-5,15.04-3.33,3.92-7.4,6.3-12.2,7.16,4.07.6,7.47,2.32,10.2,5.16,2.73,2.84,4.47,7.01,5.2,12.52l1.7,233.78c.6,4.82,1.37,8.65,2.3,11.49h-2.3c-.93-2.92-1.67-6.63-2.2-11.1l-1.5-233.14c-.67-6.02-2.68-10.41-6.05-13.17-3.37-2.75-8.18-4.13-14.45-4.13H14.43v261.53h-2.2V10.29ZM35.03,54.18c7.13,0,12.72-1.85,16.75-5.55,4.03-3.7,6.05-8.82,6.05-15.36s-1.97-11.47-5.9-15.04c-3.93-3.57-9.53-5.36-16.8-5.36H14.43v41.31h20.6Z",
+      E: "M76.53,10.29h42.3v2.58h-40.1v39.24h36.9v2.58h-36.9v261.15h41.2v2.58h-43.4V10.29Z",
+      C: "M206.61,313.46c-4.83-3.31-8.63-8.35-11.4-15.1-2.77-6.75-4.15-15.12-4.15-25.11s-1.05-237.42,1.71-244.18c2.77-6.75,6.57-11.79,11.4-15.1,4.83-3.31,10.42-4.97,16.75-4.97,7.67,0,14.13,2.47,19.4,7.42,5.27,4.95,8.5,12.59,9.7,22.91h-2.3c-1.13-9.04-4.08-15.9-8.85-20.59-4.77-4.69-10.78-7.03-18.05-7.03-5.93,0-11.13,1.57-15.6,4.71-4.47,3.14-7.95,7.9-10.45,14.26-2.5,6.37-1.31,233.27-1.31,242.56s1.25,17.13,3.75,23.49c2.5,6.37,6,11.12,10.5,14.26,4.5,3.14,9.72,4.71,15.65,4.71,7.47,0,13.63-2.45,18.5-7.36,4.87-4.91,7.8-12.05,8.8-21.43h2.4c-1.07,10.24-4.25,18.05-9.55,23.43-5.3,5.38-12.02,8.07-20.15,8.07-6.33,0-11.92-1.66-16.75-4.97Z",
+      H: "M313.83,54.69h-48.3v263.73h-2.2V10.29h2.2v41.82h48.3V10.29h2.2v308.13h-2.2V54.69Z",
+    };
+    // reach falling.svg uses a different origin. Shift it into ending-point coordinates so the FEET line up
+    // with the baseline of the A (y = 125.48): the stretch then rises above the A and the tops retract down.
+    const DX = 6.28;
+    const DY = { R: -192.94, E: -192.94, H: -192.94, C: -191.33 }; // C aligned on its own start point (bottom curve overshoots the baseline)
+    const C_X_FIX = -2.43; // the C in the falling file sits 2.43 right of where it lands; line it up
+
+    const LETTERS = ['R', 'E', 'C', 'H'];
+
+    // Normalise a path to absolute commands (M L H V C S Z) so two paths drawn with a mix of
+    // relative and absolute commands can still be compared and interpolated point for point.
+    const ARGS = { M: 2, L: 2, H: 1, V: 1, C: 6, S: 4, Z: 0 };
+    function normalise(d) {
+      const toks = d.match(/[a-zA-Z]|-?(?:\d*\.\d+|\d+\.?)(?:e[-+]?\d+)?/g);
+      const segs = [];
+      let i = 0, cmd = '', x = 0, y = 0, sx = 0, sy = 0;
+      while (i < toks.length) {
+        if (/[a-zA-Z]/.test(toks[i])) cmd = toks[i++];
+        else if (cmd === 'M') cmd = 'L';
+        else if (cmd === 'm') cmd = 'l';
+        const up = cmd.toUpperCase(), rel = cmd !== up;
+        const n = ARGS[up];
+        const a = toks.slice(i, i + n).map(parseFloat);
+        i += n;
+        if (up === 'Z') { segs.push({ c: 'Z', n: [] }); x = sx; y = sy; continue; }
+        if (up === 'H') { const nx = rel ? x + a[0] : a[0]; segs.push({ c: 'H', n: [nx] }); x = nx; continue; }
+        if (up === 'V') { const ny = rel ? y + a[0] : a[0]; segs.push({ c: 'V', n: [ny] }); y = ny; continue; }
+        const abs = a.map((v, j) => (rel ? v + (j % 2 ? y : x) : v));
+        segs.push({ c: up, n: abs });
+        x = abs[abs.length - 2]; y = abs[abs.length - 1];
+        if (up === 'M') { sx = x; sy = y; }
+      }
+      return segs;
+    }
+
+    const shapes = {};
+    for (const k of LETTERS) {
+      const from = normalise(FALL[k]);
+      const to = normalise(END[k]);
+      if (from.map((s) => s.c).join('') !== to.map((s) => s.c).join('')) console.error('Path structure mismatch for', k);
+      // reach falling.svg has its own origin: shift it into ending-point coordinates.
+      const dx = DX + (k === 'C' ? C_X_FIX : 0), dy = DY[k];
+      from.forEach((s) => {
+        s.n = s.n.map((v, j) => (s.c === 'V' ? v + dy : s.c === 'H' ? v + dx : v + (j % 2 ? dy : dx)));
+      });
+      shapes[k] = { from, to };
+    }
+    const dAt = (k, t) => {
+      const { from, to } = shapes[k];
+      let out = '';
+      for (let i = 0; i < to.length; i++) {
+        out += to[i].c + to[i].n.map((v, j) => (from[i].n[j] + (v - from[i].n[j]) * t).toFixed(3)).join(' ');
+      }
+      return out;
+    };
+
+    // --- Layout ----------------------------------------------------------------------
+    // Fixed logo size (px per SVG unit); viewBox is sized to the window and centred on the A.
+    const svg = document.getElementById('stage');
+    const A = document.getElementById('A');
+    const fallingG = document.getElementById('falling-letters');
+    const the = document.getElementById('the');
+    const cat = document.getElementById('catering');
+    const els = Object.fromEntries(LETTERS.map((k) => [k, document.getElementById(k)]));
+
+    let viewTop = 0, reachTop = 0; // reachTop: screen y (px) of the top of the word REACH
+    function layout() {
+      const vw = innerWidth, vh = innerHeight;
+      const scale = Math.min(vw * 0.78, 760) / 304; // logo ink is ~304 units wide
+      const b = A.getBBox();
+      const cx = b.x + b.width / 2, cy = b.y + b.height / 2;
+      const W = vw / scale, H = vh / scale;
+      svg.setAttribute('viewBox', `${cx - W / 2} ${cy - H / 2} ${W} ${H}`);
+      viewTop = cy - H / 2;
+      reachTop = vh / 2 - (cy - 45.49) * scale; // REACH's cap height starts at y = 45.49 in logo units
+    }
+
+    // --- Timeline (ms) ---------------------------------------------------------------
+    const HOLD = 800;      // A alone in the centre
+    const FALL_MS = 950;   // letters fall in, already stretched
+    const SQUASH_MS = 1250; // strokes retract up their own lines to the final letterform
+    const STAGGER = 110;
+    const TEXT_MS = 800;
+    const TEXT_GAP = 150;  // pause after the last letter settles, before the words appear
+
+    const clamp = (x) => Math.min(1, Math.max(0, x));
+    const easeInQuad = (x) => x * x;
+    const easeInOutCubic = (x) => (x < 0.5 ? 4 * x * x * x : 1 - (-2 * x + 2) ** 3 / 2);
+    const easeOutCubic = (x) => 1 - (1 - x) ** 3;
+
+    const lettersDone = HOLD + (LETTERS.length - 1) * STAGGER + FALL_MS + SQUASH_MS;
+    let textStart = lettersDone + TEXT_GAP;
+
+    // --- Cloches ---------------------------------------------------------------------
+    // They sit on a ground plane in a perspective grid: rows further back are higher on the page and smaller.
+    // Every cloche is the two-part set (cloche-cobalt.png cut into dome + plate): the plate lands, then the dome
+    // drops onto it and clinks. Hover one and it rattles.
+    const SRC = 'images/cloche-cobalt.png';
+    const ART = {
+      plateW: 0.869,   // width of the plate as a fraction of the image width
+      foot: 0.962,     // where the plate meets the ground, as a fraction of the image height
+      split: 0.68,     // the image is cut here into dome (above) and plate (below)
+      domeSeat: 0.195, // how far the dome drops to sit on the plate, as a fraction of the image height
+    };
+    // The field stops above the word REACH so the logo stays clear: BACK_S gives the grid cell size (vw) of each
+    // receding row, back to front; their feet are spread evenly from near the top of the page to just above REACH.
+    // One large cloche sits alone at the front, below the logo.
+    const BACK_S = [6.5, 8.5, 10.5, 12.5, 14.5, 16.5];
+    const FRONT = { y: 97, s: 33 };  // y: % of viewport height; the front one will carry the scroll transition
+    const SPACING = 1.3;             // grid cell width, in plate widths
+
+    // ?solo shows just the one front cloche instead of the field. It rises from the bottom of the page as the open
+    // set (dome floating above the plate), then the dome lowers onto the plate.
+    const SOLO = new URLSearchParams(location.search).has('solo');
+    const RISE_MS = 1100, LOWER_AT = 950, LOWER_MS = 380;
+    const DROP_MS = 680, DOME_AT = 380, DOME_FALL = 620, ROW_GAP = 150, COL_GAP = 70;
+    const CLOCHE_START = HOLD + 100;
+    const JIGGLE_MS = 1000;
+    const hash = (n) => { const x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
+
+    const clocheLayer = document.getElementById('cloches');
+    const cells = [];
+    // Cloches are created once. Their sizes are in vw so they scale on their own; only their vertical position
+    // depends on where REACH sits, so resizing just calls placeCloches().
+    function buildCloches() {
+      const rows = (SOLO ? [] : BACK_S).map((s, r) => ({
+        s, r,
+        // alternate rows hold odd / even cell counts so each cloche sits in the gap between two behind it
+        n: (() => { let n = Math.floor(100 / (SPACING * s)) + 2; if (n % 2 !== (r % 2 ? 0 : 1)) n++; return n; })(),
+      }));
+      rows.push({ s: FRONT.s, r: SOLO ? 0 : BACK_S.length, n: 1, front: true });
+
+      rows.forEach((row) => {
+        for (let k = 0; k < row.n; k++) {
+          cells.push({ x: 50 + (k - (row.n - 1) / 2) * SPACING * row.s, y: 0, w: row.s, r: row.r, front: !!row.front, k, t0: 0, jigAt: null });
+        }
+      });
+      // wave across the grid: back row first, left to right inside a row, with a little jitter
+      cells.sort((a, b) => a.r - b.r || a.x - b.x).forEach((c, i) => {
+        c.t0 = SOLO ? CLOCHE_START : CLOCHE_START + c.r * ROW_GAP + (c.x / 100) * COL_GAP * 7 + hash(i) * 90;
+        c.sign = hash(i + 7) > 0.5 ? 1 : -1;
+        c.W = c.w / ART.plateW;        // image width in vw so the plate is c.w wide
+        c.H = (c.W * 2) / 3;           // image height in vw (image is 3:2)
+        const mk = () => {
+          const el = new Image();
+          el.alt = ''; el.src = SRC;
+          el.style.width = c.W + 'vw';
+          el.style.left = (c.x - c.W / 2) + 'vw';
+          el.style.transformOrigin = `50% ${ART.foot * 100}%`;
+          return el;
+        };
+        c.shadow = document.createElement('div');
+        c.shadow.className = 'shadow';
+        c.sw = c.w * 1.05; c.sh = c.w * 0.17;
+        Object.assign(c.shadow.style, { width: c.sw + 'vw', height: c.sh + 'vw', left: (c.x - c.sw / 2) + 'vw' });
+        c.plate = mk();                                  // bottom part of the image
+        c.plate.style.clipPath = `inset(${ART.split * 100}% 0 0 0)`;
+        c.dome = mk();                                   // top part
+        c.dome.style.clipPath = `inset(0 0 ${(1 - ART.split) * 100}% 0)`;
+        c.dome.style.transformOrigin = '50% 64%';        // rock about the rim
+        clocheLayer.append(c.shadow, c.plate, c.dome);
+        c.landAt = c.t0 + (SOLO ? LOWER_AT + LOWER_MS : DOME_AT + DOME_FALL);
+      });
+      // Words appear after everything has landed.
+      textStart = Math.max(textStart, Math.max(...cells.map((c) => c.landAt)) + 600 + TEXT_GAP);
+    }
+    function placeCloches() {
+      const vh = innerHeight;
+      const yTop = Math.min(vh * 0.14, reachTop * 0.35), yBottom = Math.max(yTop, reachTop - 12);
+      cells.forEach((c) => {
+        // back rows: feet spread evenly from near the top of the page to just above REACH
+        c.y = c.front ? FRONT.y : ((yTop + ((yBottom - yTop) * c.r) / (BACK_S.length - 1)) / vh) * 100;
+        c.plate.style.top = c.dome.style.top = `calc(${c.y}vh - ${ART.foot * c.H}vw)`;
+        c.shadow.style.top = `calc(${c.y}vh - ${c.sh * 0.45}vw)`;
+      });
+    }
+    layout();
+    buildCloches();
+    placeCloches();
+
+    const decay = (u, tau) => Math.exp(-u / tau);
+    const TAU = Math.PI * 2;
+    function renderCloches(ms) {
+      const px = innerWidth / 100, vh = innerHeight;
+      cells.forEach((c) => {
+        const Hpx = c.H * px, Wpx = c.W * px, footY = (c.y * vh) / 100;
+        const seat = ART.domeSeat * Hpx;
+        let dy, plateDy, plateRz = 0, domeDy, domeRz = 0, domeX = 0, plateX = 0, domeFrom;
+
+        if (SOLO) {
+          // Rise from below the page as the open set (dome floating above the plate), then the dome lowers onto the plate.
+          const riseFrom = vh - footY + 0.95 * Hpx;                          // whole set starts below the bottom edge
+          dy = riseFrom * (1 - easeOutCubic(clamp((ms - c.t0) / RISE_MS)));  // positive = below its resting place
+          const lp = clamp((ms - c.t0 - LOWER_AT) / LOWER_MS);
+          const ud = ms - c.t0 - LOWER_AT - LOWER_MS;                        // ms since the dome seated
+          plateDy = dy;
+          domeDy = dy + seat * easeInQuad(lp);
+          domeFrom = c.t0;
+          if (isFinite(ud) && ud > 0 && ud < 1800) {
+            domeDy -= 0.03 * Hpx * decay(ud, 200) * Math.abs(Math.sin((ud * Math.PI) / 260));
+            domeRz = 3.2 * -c.sign * decay(ud, 240) * Math.sin((ud * Math.PI) / 170);
+            plateDy += 0.012 * Hpx * decay(ud, 110) * Math.sin((ud * Math.PI) / 150);
+            plateRz += 1.4 * c.sign * decay(ud, 230) * Math.sin((ud * Math.PI) / 190);
+          }
+        } else {
+          const drop = footY + ART.foot * Hpx + 40;                          // far enough that the whole piece starts above the page
+          const p = clamp((ms - c.t0) / DROP_MS);
+          const u = ms - c.t0 - DROP_MS;                                     // ms since the plate touched down
+          dy = -drop * (1 - easeInQuad(p));
+          if (isFinite(u) && u > 0 && u < 1800) {
+            dy -= 0.035 * Hpx * decay(u, 230) * Math.abs(Math.sin((u * Math.PI) / 300));   // bounce
+            plateRz = 2.4 * c.sign * decay(u, 260) * Math.sin((u * Math.PI) / 200);         // rock on the base
+          }
+          // Dome: falls from above the page onto the plate and clinks.
+          const pd = clamp((ms - c.t0 - DOME_AT) / DOME_FALL);
+          const ud = ms - c.t0 - DOME_AT - DOME_FALL;
+          plateDy = dy;
+          domeDy = seat - (drop + seat) * (1 - easeInQuad(pd));
+          domeFrom = c.t0 + DOME_AT;
+          if (isFinite(ud) && ud > 0 && ud < 1800) {
+            domeDy -= 0.03 * Hpx * decay(ud, 200) * Math.abs(Math.sin((ud * Math.PI) / 260));
+            domeRz = 3.2 * -c.sign * decay(ud, 240) * Math.sin((ud * Math.PI) / 170);
+            plateDy += 0.012 * Hpx * decay(ud, 110) * Math.sin((ud * Math.PI) / 150);       // plate jolts under the impact
+            plateRz += 1.4 * c.sign * decay(ud, 230) * Math.sin((ud * Math.PI) / 190);
+          }
+        }
+        // Hover: the dome rattles on its plate, the plate shudders underneath.
+        const j = c.jigAt === null ? Infinity : ms - c.jigAt;
+        if (j >= 0 && j < JIGGLE_MS) {
+          const env = decay(j, 280);
+          domeRz += 6 * env * Math.sin((j / 105) * TAU);
+          domeX = 0.012 * Wpx * env * Math.sin((j / 68) * TAU);
+          domeDy -= 0.014 * Hpx * env * Math.abs(Math.sin((j / 105) * TAU));
+          plateRz += 1.8 * env * Math.sin((j / 125) * TAU + 1);
+          plateX = 0.004 * Wpx * env * Math.sin((j / 60) * TAU);
+        }
+        c.dome.style.visibility = ms < domeFrom ? 'hidden' : 'visible';
+        c.dome.style.transform = `translate(${domeX.toFixed(1)}px, ${domeDy.toFixed(1)}px) rotate(${domeRz.toFixed(2)}deg)`;
+        c.plate.style.visibility = ms < c.t0 ? 'hidden' : 'visible';
+        c.plate.style.transform = `translate(${plateX.toFixed(1)}px, ${plateDy.toFixed(1)}px) rotate(${plateRz.toFixed(2)}deg)`;
+
+        // Shadow: marks the landing spot before anything arrives, then firms up and tightens as the piece comes in.
+        const air = clamp(Math.abs(dy) / (vh * (SOLO ? 0.6 : 0.9)));
+        const show = clamp((ms - (c.t0 - 380)) / 380);
+        c.shadow.style.opacity = (show * (0.3 + 0.7 * (1 - air))).toFixed(3);
+        c.shadow.style.transform = `scale(${(0.6 + 0.4 * (1 - air)).toFixed(3)})`;
+      });
+    }
+
+    let lastMs = 0;
+    function render(ms) {
+      lastMs = ms;
+      renderCloches(ms);
+      // Feet sit on the A's baseline (y 125.48) when landed; start with the whole stretched letter above the viewport.
+      const startY = viewTop - 140;
+      LETTERS.forEach((k, i) => {
+        const t0 = HOLD + i * STAGGER;
+        const fall = clamp((ms - t0) / FALL_MS);
+        const squash = clamp((ms - t0 - FALL_MS) / SQUASH_MS);
+        els[k].setAttribute('d', dAt(k, easeInOutCubic(squash)));
+        els[k].setAttribute('transform', `translate(0 ${(startY * (1 - easeInQuad(fall))).toFixed(2)})`);
+        els[k].style.visibility = ms < t0 ? 'hidden' : 'visible';
+      });
+      [the, cat].forEach((el, i) => {
+        const p = easeOutCubic(clamp((ms - textStart - i * 250) / TEXT_MS));
+        el.setAttribute('opacity', p.toFixed(3));
+        el.setAttribute('dy', ((1 - p) * 6).toFixed(2));
+      });
+    }
+
+    // --- Playback --------------------------------------------------------------------
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let raf = 0, startAt = 0, interactive = false, hoverLoop = 0;
+    function play() {
+      cancelAnimationFrame(raf);
+      cancelAnimationFrame(hoverLoop);
+      hoverLoop = 0;
+      cells.forEach((c) => (c.jigAt = null));
+      layout();
+      if (reduced) { render(Infinity); return; }
+      const frozen = new URLSearchParams(location.search).get('t'); // ?t=1800 freezes the timeline at 1800ms (for tuning)
+      if (frozen !== null) { render(parseFloat(frozen)); interactive = true; startAt = performance.now() - parseFloat(frozen); return; } // hover still works
+      interactive = true;
+      startAt = performance.now();
+      const tick = (now) => {
+        const ms = now - startAt;
+        render(ms);
+        if (ms < textStart + 250 + TEXT_MS) raf = requestAnimationFrame(tick);
+      };
+      render(0);
+      raf = requestAnimationFrame(tick);
+    }
+
+    // --- Hover: cloches shake and jiggle ----------------------------------------------
+    // Hit-test against an ellipse around each cloche (the image boxes are mostly transparent), nearest row first.
+    function cellAt(x, y, ms) {
+      const px = innerWidth / 100, vh = innerHeight;
+      for (let i = cells.length - 1; i >= 0; i--) {
+        const c = cells[i];
+        if (ms < c.landAt) continue;                                  // only once it has landed
+        const Hpx = c.H * px, footY = (c.y * vh) / 100;
+        const dx = (x - c.x * px) / (c.w * px * 0.5);
+        const dy = (y - (footY - 0.36 * Hpx)) / (0.4 * Hpx);
+        if (dx * dx + dy * dy <= 1) return c;
+      }
+      return null;
+    }
+    function jiggleFrame() {
+      const ms = performance.now() - startAt;
+      renderCloches(ms);
+      hoverLoop = cells.some((c) => c.jigAt !== null && ms - c.jigAt < JIGGLE_MS) ? requestAnimationFrame(jiggleFrame) : 0;
+    }
+    function poke(e) {
+      if (!interactive) return;
+      const ms = performance.now() - startAt;
+      const c = cellAt(e.clientX, e.clientY, ms);
+      document.body.style.cursor = c ? 'pointer' : '';
+      if (c && (c.jigAt === null || ms - c.jigAt > JIGGLE_MS * 0.7)) {   // re-rattle if you keep hovering
+        c.jigAt = ms;
+        if (!hoverLoop) hoverLoop = requestAnimationFrame(jiggleFrame);
+      }
+    }
+    addEventListener('pointermove', poke);
+    addEventListener('pointerdown', poke);
+
+    // Fade the A in gently, then run. Wait for the font so "the" / "catering" don't swap mid-reveal.
+    addEventListener('resize', () => {
+      layout();
+      placeCloches();
+      render(lastMs);
+    });
+    document.querySelector('.replay').addEventListener('click', play);
+    // Wait for the font (so "the" / "catering" don't swap mid-reveal) and the image, but never more than 2s:
+    // if the font kit is slow or blocked on this domain the animation still runs, with the fallback font.
+    const fontReady = document.fonts.ready.then(() => document.fonts.load('600 30px "sets-grotesk-m"')).catch(() => {});
+    const imageReady = new Image();
+    imageReady.src = SRC;
+    Promise.race([
+      Promise.all([fontReady, imageReady.decode().catch(() => {})]),
+      new Promise((resolve) => setTimeout(resolve, 2000)),
+    ]).then(play);
+  })();
+  </script>
+</body>
+</html>
