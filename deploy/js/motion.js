@@ -62,17 +62,23 @@
     set.style.whiteSpace = 'normal';
     set.style.justifyContent = 'center';
   } else {
+    let setW = 0, fillW = 0;
     const fill = () => {
       while (track.children.length > 1) track.lastChild.remove();
-      const need = innerWidth * 2 + set.offsetWidth;
-      for (let n = 1; set.offsetWidth * n < need; n++) {
+      setW = set.offsetWidth;
+      fillW = innerWidth;
+      const need = innerWidth * 2 + setW;
+      for (let n = 1; setW * n < need; n++) {
         const clone = set.cloneNode(true);
         clone.setAttribute('aria-hidden', 'true');
         track.append(clone);
       }
     };
     fill();
-    addEventListener('resize', fill);
+    // Rebuilding the track on every "resize" made the marquee hop whenever a phone's address bar slid in or out, so only
+    // rebuild when the width changed (rotation) or the font arrived and changed the width of the words.
+    addEventListener('resize', () => { if (innerWidth !== fillW) fill(); });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { if (set.offsetWidth !== setW) fill(); });
     let x = 0, dir = -1, lastY = scrollY, vel = 0;
     const drift = () => {
       const dy = scrollY - lastY;
@@ -80,7 +86,7 @@
       vel += (Math.abs(dy) - vel) * 0.12;
       if (dy > 0) dir = -1; else if (dy < 0) dir = 1;
       x += dir * (0.6 + vel * 0.55);
-      const w = set.offsetWidth;
+      const w = setW;
       if (x <= -w) x += w;
       if (x > 0) x -= w;
       track.style.transform = `translate3d(${x.toFixed(1)}px,0,0)`;
@@ -89,7 +95,9 @@
     new IntersectionObserver(([e]) => {
       const was = marqueeVisible;
       marqueeVisible = e.isIntersecting;
-      if (marqueeVisible && !was) requestAnimationFrame(drift);
+      // lastY is stale after the marquee has been off screen: without this reset the first frame sees the whole distance
+      // scrolled as one huge step and the marquee sprints.
+      if (marqueeVisible && !was) { lastY = scrollY; vel = 0; requestAnimationFrame(drift); }
     }).observe(marquee);
   }
 
@@ -133,14 +141,39 @@
     const btn = $('.acc__btn', item);
     if (btn.getAttribute('aria-expanded') === 'true') item.classList.add('is-open');
     btn.addEventListener('click', () => {
+      const before = btn.getBoundingClientRect().top;
       const open = !item.classList.contains('is-open');
       items.forEach((other) => {
         const isThis = other === item;
         other.classList.toggle('is-open', isThis && open);
         $('.acc__btn', other).setAttribute('aria-expanded', String(isThis && open));
       });
+      if (!reduced) holdPosition(btn, before);
     });
   });
+
+  // Opening one menu closes another, and if that one is above, everything below it (the row just tapped included) used
+  // to slide up the screen. Browsers without scroll anchoring (iOS Safari) did this every time. For the length of the
+  // transition, scroll by whatever the row has moved so it stays under the finger. A touch or wheel hands control back.
+  let holdId = 0, rowHold = null;
+  const applyHold = () => {
+    if (!rowHold) return;
+    const d = rowHold.btn.getBoundingClientRect().top - rowHold.before;
+    if (Math.abs(d) > 0.5) scrollTo(0, scrollY + d);
+  };
+  function holdPosition(btn, before) {
+    const id = ++holdId, t0 = performance.now(), root = document.documentElement;
+    rowHold = { btn, before };
+    root.style.scrollBehavior = 'auto';
+    const stop = () => { if (holdId === id) holdId++; };
+    addEventListener('touchstart', stop, { passive: true, once: true });
+    addEventListener('wheel', stop, { passive: true, once: true });
+    const tick = (now) => {
+      if (holdId !== id || now - t0 > 800) { if (holdId === id) { holdId++; rowHold = null; } root.style.scrollBehavior = ''; return; }
+      requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  }
 
   // The plate follows the lower border: --drop is the panel's height, updated every frame while it opens or closes
   // (a ResizeObserver fires after layout and before paint, so the two stay in step, opening and closing alike).
@@ -149,6 +182,7 @@
       const lid = $('.cloche', e.target.closest('.acc__item'));
       lid.style.setProperty('--drop', e.target.getBoundingClientRect().height.toFixed(2) + 'px');
     });
+    applyHold(); // same frame, after layout and before paint: the tapped row never visibly moves
   });
   $$('.acc__panel').forEach((panel) => ro.observe(panel));
 
@@ -166,7 +200,24 @@
     sec.style.setProperty('--card-h', Math.max(270, Math.min(420, fit)) + 'px');
     sec.style.setProperty('--tail', (cards[0].offsetHeight + (parseFloat(getComputedStyle(cards[0]).marginBottom) || 0)) + 'px');
   };
-  if (svcHead && svcStack) { sizeHead(); addEventListener('resize', sizeHead); addEventListener('load', sizeHead); }
+  // what each card's sticky offset and height are (they only change on a real resize), so the scroll pass never has to ask
+  const stuckAt = [], cardH = [];
+  const measureCards = () => {
+    cards.forEach((card, i) => { stuckAt[i] = parseFloat(getComputedStyle(card).top) || 0; cardH[i] = card.offsetHeight; });
+  };
+  if (svcHead && svcStack) {
+    let sizedW = innerWidth, sizedH = innerHeight;
+    const resized = () => {
+      // phones fire "resize" as the address bar moves; only a real change in size needs the cards measuring again
+      if (innerWidth === sizedW && Math.abs(innerHeight - sizedH) < 150) return;
+      sizedW = innerWidth; sizedH = innerHeight;
+      sizeHead(); measureCards();
+    };
+    sizeHead(); measureCards();
+    addEventListener('resize', resized);
+    addEventListener('load', () => { sizeHead(); measureCards(); });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { sizeHead(); measureCards(); });
+  }
 
   // --- The lid in the "Every Event Is Unique" band lifts as it scrolls through the middle -------------
   const serve = $('#serve');
@@ -177,44 +228,57 @@
   const progress = $('#progress');
   const darkSections = $$('.marquee, .band, .testimonials');
   let lastScroll = scrollY, ticking = false;
+  let lastP = -1, lastLift = -1, lastDark = null, lastProg = '', lastSolid = null;
+  const lastScale = [];
   function update() {
     ticking = false;
     const vh = innerHeight, y = scrollY;
 
-    // progress line (the nav stays pinned to the top)
+    // ---- reads (one layout) ----
     const max = document.documentElement.scrollHeight - vh;
-    progress.style.transform = `scaleX(${max > 0 ? clamp(y / max).toFixed(4) : 0})`;
-    // flip the nav text to white while a dark section sits behind it
     const probe = nav.offsetHeight / 2;
     const behind = darkSections.some((el) => { const r = el.getBoundingClientRect(); return r.top <= probe && r.bottom > probe; });
-    nav.classList.toggle('nav--light', behind);
+    const sr = words.length ? statement.getBoundingClientRect() : null;
+    const lr = !reduced && serve ? serve.getBoundingClientRect() : null;
+    const tops = !reduced && cards.length ? cards.map((card, i) => (cards[i + 1] ? cards[i + 1].getBoundingClientRect().top : 0)) : null;
+
+    // ---- writes ----
+    // progress line (the nav stays pinned to the top)
+    const prog = `scaleX(${max > 0 ? clamp(y / max).toFixed(3) : 0})`;
+    if (prog !== lastProg) { progress.style.transform = prog; lastProg = prog; }
+    // flip the nav text to white while a dark section sits behind it
+    if (behind !== lastDark) { nav.classList.toggle('nav--light', behind); lastDark = behind; }
+    const solid = y > 24;
+    if (solid !== lastSolid) { nav.classList.toggle('nav--solid', solid); lastSolid = solid; }
     lastScroll = y;
 
     if (reduced) return;
 
-    // sentence lights up
-    if (words.length) {
-      const r = statement.getBoundingClientRect();
-      const p = clamp((vh * 0.82 - r.top) / (r.height + vh * 0.25));
-      const n = words.length;
-      words.forEach((w, i) => { w.style.opacity = (0.16 + 0.84 * clamp(p * (n + 4) - i)).toFixed(3); });
+    // sentence lights up (skipped while it is fully dark or fully lit and nothing has changed)
+    if (sr) {
+      const p = clamp((vh * 0.82 - sr.top) / (sr.height + vh * 0.25));
+      if (Math.abs(p - lastP) > 0.0005) {
+        lastP = p;
+        const n = words.length;
+        words.forEach((w, i) => { w.style.opacity = (0.16 + 0.84 * clamp(p * (n + 4) - i)).toFixed(2); });
+      }
     }
 
     // lid lifts
-    if (serve) {
-      const r = serve.getBoundingClientRect();
-      const p = clamp((vh - r.top - r.height * 0.25) / (vh * 0.75));
-      serve.style.setProperty('--lift', easeOut(p).toFixed(3));
+    if (lr) {
+      const lift = easeOut(clamp((vh - lr.top - lr.height * 0.25) / (vh * 0.75))).toFixed(3);
+      if (lift !== lastLift) { serve.style.setProperty('--lift', lift); lastLift = lift; }
     }
 
     // stacked cards
-    cards.forEach((card, i) => {
-      const next = cards[i + 1];
-      if (!next) return;
-      const stuckAt = parseFloat(getComputedStyle(card).top) || 0;
-      const p = clamp(1 - (next.getBoundingClientRect().top - stuckAt) / (card.offsetHeight * 0.9));
-      card.style.transform = `scale(${(1 - 0.055 * p).toFixed(4)})`;
-    });
+    if (tops) {
+      cards.forEach((card, i) => {
+        if (!cards[i + 1]) return;
+        const p = clamp(1 - (tops[i] - stuckAt[i]) / (cardH[i] * 0.9));
+        const scale = (1 - 0.055 * p).toFixed(3);
+        if (scale !== lastScale[i]) { card.style.transform = `scale(${scale})`; lastScale[i] = scale; }
+      });
+    }
   }
   addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
   addEventListener('resize', update);

@@ -94,6 +94,11 @@
   const plate = document.getElementById('plate');
   const dome = document.getElementById('lid');
   const shadow = document.getElementById('plate-shadow');
+  // The height everything is laid out against. On phones window.innerHeight changes every time the address bar slides
+  // in or out, which used to re-lay-out the cloche mid-scroll (the plate hopped). .plate-layer is sized in svh units,
+  // so its height only changes on a real resize or rotation.
+  const plateLayer = document.querySelector('.plate-layer');
+  const stableH = () => plateLayer.clientHeight || innerHeight;
 
   // The logo is drawn in SVG units; the viewBox is sized to the hero and centred on the A, so the A is always
   // dead centre and the logo keeps a fixed size (px per unit) however tall or wide the window is.
@@ -135,7 +140,7 @@
   // --- Cloche ------------------------------------------------------------------------
   // One image (cloche-cobalt.png: dome floating above its plate) cut into two parts. The plate is the lower part; the
   // lid is the upper part, which lowers by `domeSeat` to sit on the plate.
-  const SRC = 'images/cloche-cobalt.png';
+  const SRC = 'images/cloche-cobalt.webp';
   const ART = {
     plateW: 0.869,   // width of the plate as a fraction of the image width
     foot: 0.962,     // where the plate meets the ground, as a fraction of the image height
@@ -151,7 +156,7 @@
   const c = { W: 0, H: 0, footY: 0, plateW: 0, sign: 1 };
 
   function placeCloche() {
-    const vw = innerWidth, vh = innerHeight;
+    const vw = innerWidth, vh = stableH();
     c.footY = vh * FOOT_Y;
     // Size the cloche so the top of its knob stops below "catering": the visible cloche (knob to plate base) is
     // ~70.8% of the image height. Never bigger than 30% of the width (60% on phones).
@@ -181,16 +186,18 @@
   // The plate stays pinned to the bottom of the screen until the landing slot (under "Who's hungry?") reaches its
   // resting place; from then on it moves up with the page, so the footer details sit below the plate.
   const slot = document.getElementById('plate-slot');
-  const plateLayer = document.querySelector('.plate-layer');
+  let lastLift = 0;
   function updateLanding() {
     if (!slot) return;
-    const lift = Math.min(0, slot.getBoundingClientRect().bottom - c.footY);
-    plateLayer.style.transform = lift ? `translateY(${lift.toFixed(1)}px)` : '';
+    const lift = Math.round(Math.min(0, slot.getBoundingClientRect().bottom - c.footY) * 2) / 2;
+    if (lift === lastLift) return;
+    lastLift = lift;
+    plateLayer.style.transform = lift ? `translate3d(0, ${lift}px, 0)` : '';
   }
 
   let jigAt = null;
   function renderCloche(ms) {
-    const vh = innerHeight, H = c.H, W = c.W;
+    const vh = stableH(), H = c.H, W = c.W;
     const seat = ART.domeSeat * H;
     // Rise from below the page as the open set (lid floating above the plate), then the lid lowers onto the plate.
     const riseFrom = vh - c.footY + 0.95 * H;                              // the whole set starts below the bottom edge
@@ -222,7 +229,7 @@
 
     // Shadow: marks the landing spot before anything arrives, then firms up and tightens as the set comes in.
     const air = clamp(Math.abs(dy) / (vh * 0.6));
-    const show = clamp((ms - (CLOCHE_AT - 380)) / 380);
+    const show = clamp((ms - Math.max(CLOCHE_AT - 380, 1)) / 380); // 0 at ms = 0, so no ghost shadow while the loader plays
     shadow.style.opacity = (show * (0.3 + 0.7 * (1 - air))).toFixed(3);
     shadow.style.transform = `scale(${(0.6 + 0.4 * (1 - air)).toFixed(3)})`;
   }
@@ -253,6 +260,7 @@
   // under them. The words start slowly (service, food, events) and then keep speeding up until the count reaches 100%
   // and it lands on the last word. Then "class", the word and the percentage fade, the A glides slowly back to the
   // centre, and the logo plays (REACH falls, the cloche rises from the ground).
+  let loaderActive = false; // true while the loader plays, so a resize or a late font re-measures it
   const pre = document.getElementById('pre');
   const preClass = document.getElementById('pre-class');
   const preW = [document.getElementById('pre-w1'), document.getElementById('pre-w2')];
@@ -316,18 +324,19 @@
   // Draw the loader at one moment.
   //   appear: the A slides left (0-1) · textIn: "class", the word and the % fade in (0-1) · st: from stateAt()
   //   fade: all the text fades out (0-1) · glide: the A glides back to the centre (0-1)
+  const setText = (node, v) => { if (node.textContent !== v) node.textContent = v; };
   function drawPre({ appear, textIn, st, fade, glide }) {
     const left = easeInOutCubic(appear) * (1 - easeInOutCubic(glide));     // 0 = centred and full size, 1 = shifted left
     const sc = 1 + (pl.s - 1) * left;
     A.setAttribute('transform', left < 0.0005 ? '' : `translate(${pl.cx} ${pl.cy}) scale(${sc.toFixed(4)}) translate(${-pl.cx} ${-pl.cy}) translate(${(-pl.dx * left).toFixed(3)} 0)`);
     pre.setAttribute('opacity', (clamp(textIn) * (1 - clamp(fade))).toFixed(3));
-    prePct.textContent = `${Math.floor(clamp(st.p) * 100)}%`;
+    setText(prePct, `${Math.floor(clamp(st.p) * 100)}%`);
     // each word always lives in the same one of the two text elements (even / odd), so nothing has to be tracked
     const cur = preW[st.idx % 2], prev = preW[(st.idx + 1) % 2];
-    cur.textContent = WORDS[st.idx];
+    setText(cur, WORDS[st.idx]);
     if (st.idx > 0 && st.u < 1) {
       const u = easeInOutCubic(st.u);
-      prev.textContent = WORDS[st.idx - 1];
+      setText(prev, WORDS[st.idx - 1]);
       prev.setAttribute('transform', `translate(0 ${(-RISE * u).toFixed(2)})`); prev.setAttribute('opacity', (1 - u).toFixed(3));
       cur.setAttribute('transform', `translate(0 ${(RISE * (1 - u)).toFixed(2)})`); cur.setAttribute('opacity', u.toFixed(3));
     } else {
@@ -337,6 +346,7 @@
   }
 
   function endLoading() {
+    try { sessionStorage.setItem('reach-loader', '1'); } catch (e) {}
     root.classList.remove('is-loading');
     document.body.removeAttribute('aria-busy');
   }
@@ -345,7 +355,9 @@
   // the count never runs ahead of the fonts and the cloche image actually arriving (it waits at ~90% until they have).
   const APPEAR_MS = 950, TEXT_IN_AT = 0.9, TEXT_IN_MS = 500; // the text only starts to show once the A has (nearly) arrived
   const LAND_HOLD = 550, FADE_MS = 650, GLIDE_AFTER = 300, GLIDE_MS = 1800;
+  const MAX_WAIT = 4500; // on a slow connection the count stops waiting for the fonts / image after this long
   function runLoader(readiness) {
+    loaderActive = true;
     return new Promise((resolve) => {
       const t0 = performance.now();
       let last = t0, tau = 0, doneAt = -1;
@@ -355,7 +367,7 @@
         const appear = clamp(t / APPEAR_MS);
         const textIn = clamp((t - APPEAR_MS * TEXT_IN_AT) / TEXT_IN_MS);
         if (t >= APPEAR_MS * TEXT_IN_AT) {                      // the schedule starts when the text does
-          const ready = readiness();
+          const ready = now - t0 > MAX_WAIT ? 1 : readiness();
           const cap = ready >= 1 ? 1 : 0.3 + 0.6 * ready;       // hold back until the real work is done
           tau = Math.min(SCHEDULE_MS * cap, tau + dt);
         }
@@ -366,7 +378,7 @@
         const glide = since < LAND_HOLD + GLIDE_AFTER ? 0 : clamp((since - LAND_HOLD - GLIDE_AFTER) / GLIDE_MS);
         drawPre({ appear, textIn, st, fade, glide });
         if (glide < 1) requestAnimationFrame(tick);
-        else { A.removeAttribute('transform'); pre.setAttribute('opacity', 0); resolve(); }
+        else { A.removeAttribute('transform'); pre.setAttribute('opacity', 0); loaderActive = false; resolve(); }
       };
       requestAnimationFrame(tick);
     });
@@ -418,12 +430,19 @@
   }
   addEventListener('pointermove', poke);
   addEventListener('pointerdown', poke);
-  addEventListener('scroll', updateLanding, { passive: true });
+  let landTick = false;
+  addEventListener('scroll', () => { if (!landTick) { landTick = true; requestAnimationFrame(() => { landTick = false; updateLanding(); }); } }, { passive: true });
   addEventListener('load', updateLanding);
+  // Phones fire "resize" whenever the address bar slides in or out; nothing needs re-laying-out for that.
+  let seenW = innerWidth, seenH = stableH();
   addEventListener('resize', () => {
+    const w = innerWidth, h = stableH();
+    if (w === seenW && h === seenH) return;
+    seenW = w; seenH = h;
     layout();
     placeCloche();
     render(lastMs);
+    if (loaderActive) layoutPre();
   });
 
   // --- Start up --------------------------------------------------------------------------
@@ -434,7 +453,10 @@
   placeCloche();
   render(0);
   const qs = new URLSearchParams(location.search);
-  const skipLoader = reduced || qs.has('t') || qs.has('pre') || location.hash || scrollY > 4 || !pre;
+  // the loader plays once per visit (tab session); later page loads go straight to the logo
+  let seen = false;
+  try { seen = sessionStorage.getItem('reach-loader') === '1'; } catch (e) {}
+  const skipLoader = reduced || seen || qs.has('t') || qs.has('pre') || location.hash || scrollY > 4 || !pre;
   let tasks = 0;
   const TASKS = 3;
   const done = () => { tasks = Math.min(TASKS, tasks + 1); };
@@ -448,7 +470,7 @@
   const capped = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
   if (skipLoader) {
-    const why = reduced ? 'reduced motion is on' : qs.has('t') || qs.has('pre') ? 'a ?t= / ?pre= tuning parameter is in the URL' : location.hash ? 'the URL has a #section' : scrollY > 4 ? 'the page was already scrolled' : 'loader markup missing (stale cached index.html?)';
+    const why = reduced ? 'reduced motion is on' : seen ? 'already played this visit' : qs.has('t') || qs.has('pre') ? 'a ?t= / ?pre= tuning parameter is in the URL' : location.hash ? 'the URL has a #section' : scrollY > 4 ? 'the page was already scrolled' : 'loader markup missing (stale cached index.html?)';
     console.info('[hero] loader skipped:', why);
     endLoading();
     // ?pre=0.5 freezes the loader at 50% for tuning (add &fade=1 or &glide=0.5 for the later moments)
@@ -468,7 +490,10 @@
       layoutPre();
       return runLoader(() => tasks / TASKS);
     }).then(() => { endLoading(); play(); });
+    // if the fonts arrive after the loader was measured with the fallback font, measure it again (the words would
+    // otherwise be mis-centred or clipped for the rest of the loader)
+    fontReady.then(() => { if (loaderActive) layoutPre(); });
     // never leave a visitor waiting on the loader
-    setTimeout(() => { if (root.classList.contains('is-loading')) { endLoading(); A.removeAttribute('transform'); pre.setAttribute('opacity', 0); play(); } }, 8000 + 6000);
+    setTimeout(() => { if (root.classList.contains('is-loading')) { loaderActive = false; endLoading(); A.removeAttribute('transform'); pre.setAttribute('opacity', 0); play(); } }, 14000);
   }
 })();

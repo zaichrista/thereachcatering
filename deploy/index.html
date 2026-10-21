@@ -39,13 +39,18 @@
   }
   </script>
   <link rel="preconnect" href="https://use.typekit.net" crossorigin>
+  <link rel="preconnect" href="https://p.typekit.net" crossorigin>
   <!-- Adobe Fonts kit nyc5qch: Sets Grotesk M. Allowed domains are managed at fonts.adobe.com > Web Projects -->
   <link rel="stylesheet" href="https://use.typekit.net/nyc5qch.css">
-  <link rel="stylesheet" href="css/site.css?v=20251020f">
+  <link rel="preload" as="image" href="images/cloche-cobalt.webp" type="image/webp">
+  <link rel="stylesheet" href="css/site.css?v=20251021b">
   <!-- 'is-loading' locks scrolling and hides the nav while the hero loader plays (hero.js removes it). The timeout is a
        safety net so the page can never stay locked. -->
   <script>
     document.documentElement.classList.add('js', 'is-loading');
+    // Mobile browsers restore the old scroll position after load; with the page locked for the loader that made it jump
+    // part-way through. The loader always starts from the top (a #section link still goes straight to its section).
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
     setTimeout(function () { document.documentElement.classList.remove('is-loading'); }, 15000);
   </script>
 <script id="wix-site-script" src="https://manage.wix.com/_api/headless-business-setup/v1/headless-business/site-script.js" data-client-id="c28402c7-a0e5-4d0b-9ce9-03b6578555e1" async></script></head>
@@ -57,7 +62,7 @@
        covers it as you scroll, and the transparent footer lets it show again. (The lid lives in the hero and scrolls with it.) ===== -->
   <div class="plate-layer" aria-hidden="true">
     <div id="plate-shadow" class="cl-shadow"></div>
-    <img id="plate" class="cl-img" alt="" width="1200" height="800" decoding="async" src="images/cloche-cobalt.png">
+    <img id="plate" class="cl-img" alt="" width="1200" height="800" decoding="async" src="images/cloche-cobalt.webp">
   </div>
 
   <!-- ===== Navigation (slides away as you scroll down, back as you scroll up) ===== -->
@@ -76,7 +81,7 @@
     <!-- ===== Hero: the animated logo. The cloche is part of this moment. ===== -->
     <section class="hero" id="hero" aria-labelledby="hero-title">
       <p class="visually-hidden" id="hero-title">The Reach Catering</p>
-      <img id="lid" class="cl-img" alt="" aria-hidden="true" src="images/cloche-cobalt.png">
+      <img id="lid" class="cl-img" alt="" aria-hidden="true" src="images/cloche-cobalt.webp">
       <svg id="logo" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
         <!-- Paths are in "ending point" coordinates (reach ending point.svg). R, E, C, H are drawn by hero.js. -->
         <g id="logo-g">
@@ -167,7 +172,7 @@
             <h3 class="acc__h"><button class="acc__btn" type="button" aria-expanded="true" aria-controls="m1" id="m1-btn">
               <span class="acc__n" aria-hidden="true">01</span>
               <span class="acc__title">Canapés &amp; Bowl Food</span>
-              <span class="cloche acc__icon" aria-hidden="true"><img class="cloche__plate" src="images/cloche-cobalt.png" alt=""><img class="cloche__dome" src="images/cloche-cobalt.png" alt=""></span>
+              <span class="cloche acc__icon" aria-hidden="true"><img class="cloche__plate" src="images/cloche-cobalt.webp" alt=""><img class="cloche__dome" src="images/cloche-cobalt.webp" alt=""></span>
             </button></h3>
             <div class="acc__panel" id="m1" role="region" aria-labelledby="m1-btn"><div class="acc__inner">
               <p class="item__sub">Small Bites, Big Impressions</p>
@@ -178,7 +183,7 @@
             <h3 class="acc__h"><button class="acc__btn" type="button" aria-expanded="false" aria-controls="m2" id="m2-btn">
               <span class="acc__n" aria-hidden="true">02</span>
               <span class="acc__title">Buffets &amp; Sharing Feasts</span>
-              <span class="cloche acc__icon" aria-hidden="true"><img class="cloche__plate" src="images/cloche-cobalt.png" alt=""><img class="cloche__dome" src="images/cloche-cobalt.png" alt=""></span>
+              <span class="cloche acc__icon" aria-hidden="true"><img class="cloche__plate" src="images/cloche-cobalt.webp" alt=""><img class="cloche__dome" src="images/cloche-cobalt.webp" alt=""></span>
             </button></h3>
             <div class="acc__panel" id="m2" role="region" aria-labelledby="m2-btn"><div class="acc__inner">
               <p class="item__sub">Generous, Relaxed &amp; Full of Flavour</p>
@@ -189,7 +194,7 @@
             <h3 class="acc__h"><button class="acc__btn" type="button" aria-expanded="false" aria-controls="m3" id="m3-btn">
               <span class="acc__n" aria-hidden="true">03</span>
               <span class="acc__title">Seated Dining</span>
-              <span class="cloche acc__icon" aria-hidden="true"><img class="cloche__plate" src="images/cloche-cobalt.png" alt=""><img class="cloche__dome" src="images/cloche-cobalt.png" alt=""></span>
+              <span class="cloche acc__icon" aria-hidden="true"><img class="cloche__plate" src="images/cloche-cobalt.webp" alt=""><img class="cloche__dome" src="images/cloche-cobalt.webp" alt=""></span>
             </button></h3>
             <div class="acc__panel" id="m3" role="region" aria-labelledby="m3-btn"><div class="acc__inner">
               <p class="item__sub">Beautifully Served, Thoughtfully Prepared</p>
@@ -200,7 +205,7 @@
             <h3 class="acc__h"><button class="acc__btn" type="button" aria-expanded="false" aria-controls="m4" id="m4-btn">
               <span class="acc__n" aria-hidden="true">04</span>
               <span class="acc__title">Breakfast &amp; Conference Catering</span>
-              <span class="cloche acc__icon" aria-hidden="true"><img class="cloche__plate" src="images/cloche-cobalt.png" alt=""><img class="cloche__dome" src="images/cloche-cobalt.png" alt=""></span>
+              <span class="cloche acc__icon" aria-hidden="true"><img class="cloche__plate" src="images/cloche-cobalt.webp" alt=""><img class="cloche__dome" src="images/cloche-cobalt.webp" alt=""></span>
             </button></h3>
             <div class="acc__panel" id="m4" role="region" aria-labelledby="m4-btn"><div class="acc__inner">
               <p class="item__sub">The Perfect Start to Every Event</p>
@@ -211,7 +216,7 @@
             <h3 class="acc__h"><button class="acc__btn" type="button" aria-expanded="false" aria-controls="m5" id="m5-btn">
               <span class="acc__n" aria-hidden="true">05</span>
               <span class="acc__title">Drinks &amp; Reception Packages</span>
-              <span class="cloche acc__icon" aria-hidden="true"><img class="cloche__plate" src="images/cloche-cobalt.png" alt=""><img class="cloche__dome" src="images/cloche-cobalt.png" alt=""></span>
+              <span class="cloche acc__icon" aria-hidden="true"><img class="cloche__plate" src="images/cloche-cobalt.webp" alt=""><img class="cloche__dome" src="images/cloche-cobalt.webp" alt=""></span>
             </button></h3>
             <div class="acc__panel" id="m5" role="region" aria-labelledby="m5-btn"><div class="acc__inner">
               <p class="item__sub">Raise a Glass to Every Occasion</p>
@@ -231,7 +236,7 @@
           <p class="reveal">Contact our team to discuss your event and receive a personalised catering proposal.</p>
           <a class="btn btn--light reveal" href="#contact">Enquire About Our Menus</a>
         </div>
-        <div class="cloche serve" id="serve" aria-hidden="true"><img class="cloche__plate" src="images/cloche-cobalt.png" alt=""><img class="cloche__dome" src="images/cloche-cobalt.png" alt=""></div>
+        <div class="cloche serve" id="serve" aria-hidden="true"><img class="cloche__plate" src="images/cloche-cobalt.webp" alt=""><img class="cloche__dome" src="images/cloche-cobalt.webp" alt=""></div>
       </div>
     </section>
 
@@ -375,9 +380,9 @@
     </p>
   </footer>
 
-  <script src="js/hero.js?v=20251020f"></script>
-  <script src="js/main.js?v=20251020f"></script>
+  <script src="js/hero.js?v=20251021b"></script>
+  <script src="js/main.js?v=20251021b"></script>
   <script type="module" src="js/forms.js"></script>
-  <script src="js/motion.js?v=20251020f"></script>
+  <script src="js/motion.js?v=20251021b"></script>
 </body>
 </html>

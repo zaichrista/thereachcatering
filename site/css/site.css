@@ -30,7 +30,7 @@
 }
 
 * { box-sizing: border-box; margin: 0; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; -webkit-tap-highlight-color: transparent; }
 body { background: var(--bg); color: var(--ink); font-family: var(--font); font-size: 1rem; line-height: 1.55; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
 img { max-width: 100%; display: block; }
 a { color: inherit; }
@@ -41,7 +41,7 @@ a { color: inherit; }
 :focus-visible { outline: 2px solid var(--cobalt); outline-offset: 3px; }
 
 /* ---------- Fixed plate ---------- */
-.plate-layer { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
+.plate-layer { position: fixed; top: 0; left: 0; right: 0; height: 100vh; height: 100svh; z-index: 1; pointer-events: none; contain: layout style; }
 .cl-img { position: absolute; height: auto; visibility: hidden; user-select: none; }
 .cl-shadow {
   position: absolute; opacity: 0;
@@ -58,11 +58,11 @@ a { color: inherit; }
 .nav__brand { font-weight: 200; font-size: 1.5rem; letter-spacing: .06em; text-decoration: none; margin-right: auto; }
 .nav__links { display: flex; gap: 1.75rem; }
 .nav__links a { text-decoration: none; font-size: .9rem; font-weight: 500; }
-.nav__links a:hover { color: var(--cobalt); }
+@media (hover: hover) { .nav__links a:hover { color: var(--cobalt); } }
 /* Over a dark section (marquee, band, testimonials) motion.js adds .nav--light so the text flips to white. */
 .nav__brand, .nav__links a { transition: color .3s ease; }
 .nav--light .nav__brand, .nav--light .nav__links a { color: #fff; }
-.nav--light .nav__links a:hover { color: rgba(255, 255, 255, .7); }
+@media (hover: hover) { .nav--light .nav__links a:hover { color: rgba(255, 255, 255, .7); } }
 
 .btn {
   display: inline-block; cursor: pointer; text-decoration: none; text-align: center;
@@ -71,16 +71,16 @@ a { color: inherit; }
   padding: .95em 1.9em; transition: background .25s, color .25s, border-color .25s, transform .25s var(--ease);
   translate: var(--mx, 0) var(--my, 0); /* magnetic pull, eased frame by frame in motion.js (separate from transform so it never fights .reveal) */
 }
-.btn:hover { background: var(--accent-tint); color: var(--accent-deep); border-color: var(--accent); transform: translateY(-2px); }
+@media (hover: hover) { .btn:hover { background: var(--accent-tint); color: var(--accent-deep); border-color: var(--accent); transform: translateY(-2px); } }
 .btn:focus-visible { outline-color: var(--accent); }
 .js .btn.reveal { transition: opacity .9s var(--ease), transform .9s var(--ease), background .25s, color .25s, border-color .25s; }
 .js .btn.reveal.is-in { transition-delay: 0s; }
 .btn--small { padding: .65em 1.3em; font-size: .75rem; }
 .btn--ghost { background: transparent; color: var(--cobalt); border-color: var(--cobalt); }
-.btn--ghost:hover { background: var(--cobalt); color: #fff; border-color: var(--cobalt); }
+@media (hover: hover) { .btn--ghost:hover { background: var(--cobalt); color: #fff; border-color: var(--cobalt); } }
 .btn--ghost:focus-visible { outline-color: var(--cobalt); }
 .btn--light { background: #fff; color: var(--cobalt); border-color: #fff; }
-.btn--light:hover { background: transparent; color: #fff; border-color: #fff; }
+@media (hover: hover) { .btn--light:hover { background: transparent; color: #fff; border-color: #fff; } }
 
 /* ---------- Hero ---------- */
 .hero { position: relative; z-index: 2; height: 100vh; height: 100svh; min-height: 520px; }
@@ -93,7 +93,7 @@ a { color: inherit; }
 .hero svg .pre-pct { font-size: 20px; font-weight: 300; letter-spacing: .14em; font-variant-numeric: tabular-nums; }
 
 /* While the loader plays: no scrolling, and the nav stays out of the way until the logo is done. */
-html.is-loading, html.is-loading body { overflow: hidden; }
+html.is-loading, html.is-loading body { overflow: hidden; touch-action: none; overscroll-behavior: none; }
 html.is-loading .nav { opacity: 0; pointer-events: none; }
 .nav { transition: transform .45s var(--ease), opacity .9s ease; }
 
@@ -127,7 +127,7 @@ section[id], footer[id] { scroll-margin-top: 3rem; }
 .welcome { padding-top: clamp(5rem, 12vw, 11rem); }
 .kinds { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: clamp(1.75rem, 4vw, 3rem); }
 .kinds span { border: 1px solid var(--ink); border-radius: 999px; padding: .5em 1.2em; font-weight: 500; font-size: clamp(.85rem, 1.2vw, 1rem); transition: background .3s, color .3s, border-color .3s; }
-.kinds span:hover { background: var(--cobalt); border-color: var(--cobalt); color: #fff; }
+@media (hover: hover) { .kinds span:hover { background: var(--cobalt); border-color: var(--cobalt); color: #fff; } }
 .welcome__row { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 6vw, 6rem); align-items: end; margin-top: clamp(3.5rem, 8vw, 7rem); }
 .tagline { font-weight: 200; font-size: clamp(1.8rem, 4.2vw, 3.6rem); line-height: 1.05; letter-spacing: -.02em; color: var(--cobalt); }
 .welcome__text .btn { margin-top: 2rem; }
@@ -146,7 +146,7 @@ section[id], footer[id] { scroll-margin-top: 3rem; }
 
 /* ---------- What we offer ---------- */
 .statement { font-weight: 200; font-size: clamp(1.9rem, 4.9vw, 4.4rem); line-height: 1.12; letter-spacing: -.02em; max-width: 21em; }
-.js .statement .sw { opacity: .16; transition: opacity .25s linear; }
+.js .statement .sw { opacity: .16; }
 .offer__row { display: flex; flex-wrap: wrap; align-items: center; gap: 1.5rem 3rem; justify-content: space-between; margin-top: clamp(2.5rem, 6vw, 4.5rem); border-top: 1px solid var(--line); padding-top: 2rem; }
 .offer__row .body { margin: 0; max-width: 34em; }
 
@@ -166,13 +166,17 @@ section[id], footer[id] { scroll-margin-top: 3rem; }
 .acc__btn:focus-visible { outline: 2px solid var(--cobalt); outline-offset: 4px; }
 .acc__n { font-size: .8rem; font-weight: 600; letter-spacing: .14em; color: var(--cobalt); }
 .acc__title { font-weight: 200; font-size: clamp(1.7rem, 4.9vw, 4.6rem); line-height: 1; letter-spacing: -.03em; transition: transform .5s var(--ease), color .3s; }
-.acc__btn:hover .acc__title, .acc__btn:focus-visible .acc__title { transform: translateX(.3em); color: var(--cobalt); }
+@media (hover: hover) { .acc__btn:hover .acc__title { transform: translateX(.3em); color: var(--cobalt); } }
+.acc__btn:focus-visible .acc__title { color: var(--cobalt); }
+@media (hover: hover) { .acc__btn:focus-visible .acc__title { transform: translateX(.3em); } }
 .acc__item.is-open .acc__title { color: var(--cobalt); }
 .acc__icon { --w: clamp(76px, 11vw, 160px); }
 /* Opening a menu: the lid stays at the top of the row; the plate rides down with the lower border (motion.js sets
    --drop to the panel's height every frame), so the cloche keeps its closed spacing top and bottom. */
-.acc__btn:hover .cloche { --lift: .3; }
-.acc__item.is-open .acc__btn:hover .cloche { --lift: 0; }
+@media (hover: hover) {
+  .acc__btn:hover .cloche { --lift: .3; }
+  .acc__item.is-open .acc__btn:hover .cloche { --lift: 0; }
+}
 .acc__icon .cloche__plate { transform: translateY(var(--drop, 0px)); }
 .acc__panel { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .7s cubic-bezier(.65, 0, .35, 1); }
 .acc__item.is-open .acc__panel { grid-template-rows: 1fr; }
@@ -183,7 +187,7 @@ section[id], footer[id] { scroll-margin-top: 3rem; }
 
 /* ---------- Every event is unique ---------- */
 .band { position: relative; z-index: 2; background: var(--ink-deep); color: #fff; overflow: hidden; padding: clamp(5rem, 12vw, 10rem) var(--pad); }
-.band::before { content: ""; position: absolute; right: -15%; top: 50%; width: 80vmin; height: 80vmin; transform: translateY(-50%); background: radial-gradient(closest-side, rgba(27, 70, 230, .55), rgba(27, 70, 230, 0)); pointer-events: none; }
+.band::before { content: ""; position: absolute; right: -15%; top: 50%; width: 80vmin; height: 80vmin; width: 80svmin; height: 80svmin; transform: translateY(-50%); background: radial-gradient(closest-side, rgba(27, 70, 230, .55), rgba(27, 70, 230, 0)); pointer-events: none; }
 .band__grid { position: relative; display: grid; grid-template-columns: 1.1fr .9fr; gap: clamp(2rem, 6vw, 6rem); align-items: center; }
 .band__text p { color: rgba(255, 255, 255, .78); max-width: 32em; margin-top: 1.2rem; }
 .band__text .btn { margin-top: 2.25rem; }
@@ -195,7 +199,7 @@ section[id], footer[id] { scroll-margin-top: 3rem; }
 .stack { margin-top: clamp(3rem, 7vw, 5rem); padding-bottom: 3rem; }
 .scard {
   position: sticky; top: calc(5rem + var(--i) * 1.2rem);
-  min-height: min(62vh, 500px); margin-bottom: 1.5rem;
+  min-height: min(62vh, 500px); min-height: min(62svh, 500px); margin-bottom: 1.5rem;
   display: flex; flex-direction: column; justify-content: flex-end; gap: .35rem;
   padding: clamp(1.5rem, 4vw, 3.2rem); border-radius: 28px;
   transform-origin: 50% 0; will-change: transform;
@@ -248,7 +252,8 @@ section[id], footer[id] { scroll-margin-top: 3rem; }
 @keyframes slider-fill { to { transform: scaleX(1); } }
 .slider__btns { display: flex; gap: .75rem; }
 .round { width: 3.4rem; height: 3.4rem; border-radius: 50%; border: 1px solid rgba(255, 255, 255, .6); background: transparent; color: #fff; font: 400 1.3rem var(--font); cursor: pointer; transition: background .25s, color .25s; }
-.round:hover { background: #fff; color: var(--cobalt); }
+@media (hover: hover) { .round:hover { background: #fff; color: var(--cobalt); } }
+.round:active { background: #fff; color: var(--cobalt); }
 
 /* ---------- Contact ---------- */
 /* Little space under the form: "Who's hungry?" follows straight after it. */
@@ -278,7 +283,7 @@ section[id], footer[id] { scroll-margin-top: 3rem; }
 .footer { position: relative; z-index: 2; padding: clamp(.5rem, 1.5vw, 1.25rem) var(--pad) 1.5rem; }
 .landing { text-align: center; }
 /* line-height 1 so the line box reaches the descenders (g, y). */
-.hungry { font-weight: 200; font-size: clamp(3rem, min(12vw, 17vh), 11rem); line-height: 1; letter-spacing: -.02em; }
+.hungry { font-weight: 200; font-size: clamp(3rem, min(12vw, 17vh), 11rem); font-size: clamp(3rem, min(12vw, 17svh), 11rem); line-height: 1; letter-spacing: -.02em; }
 .plate-slot { height: var(--plate-vis, 9vw); margin: clamp(.25rem, 1vw, .75rem) auto clamp(3rem, 7vw, 5.5rem); }
 
 /* The details: thin type, small, hairline-ruled. */
@@ -300,12 +305,16 @@ section[id], footer[id] { scroll-margin-top: 3rem; }
 
 /* ---------- Small screens ---------- */
 @media (max-width: 960px) {
+  /* On phones the transparent nav sat on top of the page text; once scrolled it gets a soft frosted backdrop (motion.js adds .nav--solid). */
+  .nav::before { content: ""; position: absolute; inset: 0; z-index: -1; opacity: 0; transition: opacity .3s ease; background: rgba(246, 249, 255, .82); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); }
+  .nav--solid::before { opacity: 1; }
+  .nav--solid.nav--light::before { background: rgba(12, 20, 48, .72); }
   .nav__links { display: none; }
   .welcome__row, .band__grid, .contact__grid { grid-template-columns: 1fr; }
   .about__grid { grid-template-columns: 1fr; }
   .about__year { position: static; }
   .serve { --w: min(80vw, 520px); }
-  .scard { top: calc(4.5rem + var(--i) * .9rem); min-height: min(56vh, 460px); }
+  .scard { top: calc(4.5rem + var(--i) * .9rem); min-height: min(56vh, 460px); min-height: min(56svh, 460px); }
 }
 @media (max-width: 560px) {
   .form__grid { grid-template-columns: 1fr; }
