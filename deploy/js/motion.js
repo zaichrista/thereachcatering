@@ -226,7 +226,9 @@
   // --- Scroll-linked updates (one rAF-throttled pass) -----------------------------------------
   const nav = $('.nav');
   const progress = $('#progress');
-  const darkSections = $$('.marquee, .band, .testimonials');
+  const darkSections = $$('.marquee, .band, .testimonials, .footer');
+  const accentSection = $('.testimonials');
+  const heroSection = $('.hero');
   let lastScroll = scrollY, ticking = false;
   let lastP = -1, lastLift = -1, lastDark = null, lastProg = '', lastSolid = null;
   const lastScale = [];
@@ -238,6 +240,8 @@
     const max = document.documentElement.scrollHeight - vh;
     const probe = nav.offsetHeight / 2;
     const behind = darkSections.some((el) => { const r = el.getBoundingClientRect(); return r.top <= probe && r.bottom > probe; });
+    const onAccent = !!accentSection && (() => { const r = accentSection.getBoundingClientRect(); return r.top <= probe && r.bottom > probe; })();
+    const pastHero = !heroSection || heroSection.getBoundingClientRect().bottom <= nav.offsetHeight;
     const sr = words.length ? statement.getBoundingClientRect() : null;
     const lr = !reduced && serve ? serve.getBoundingClientRect() : null;
     const tops = !reduced && cards.length ? cards.map((card, i) => (cards[i + 1] ? cards[i + 1].getBoundingClientRect().top : 0)) : null;
@@ -248,6 +252,8 @@
     if (prog !== lastProg) { progress.style.transform = prog; lastProg = prog; }
     // flip the nav text to white while a dark section sits behind it
     if (behind !== lastDark) { nav.classList.toggle('nav--light', behind); lastDark = behind; }
+    nav.classList.toggle('nav--accent', onAccent);
+    nav.classList.toggle('nav--past-hero', pastHero); // the frost only starts once the hero has scrolled away
     const solid = y > 24;
     if (solid !== lastSolid) { nav.classList.toggle('nav--solid', solid); lastSolid = solid; }
     lastScroll = y;
