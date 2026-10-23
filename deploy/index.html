@@ -43,7 +43,7 @@
   <!-- Adobe Fonts kit nyc5qch: Sets Grotesk M. Allowed domains are managed at fonts.adobe.com > Web Projects -->
   <link rel="stylesheet" href="https://use.typekit.net/nyc5qch.css">
   <link rel="preload" as="image" href="images/cloche-cobalt.webp" type="image/webp">
-  <link rel="stylesheet" href="css/site.css?v=20261023i">
+  <link rel="stylesheet" href="css/site.css?v=20261024a">
   <!-- 'is-loading' locks scrolling and hides the nav while the hero loader plays (hero.js removes it). The timeout is a
        safety net so the page can never stay locked. -->
   <script>
@@ -58,13 +58,6 @@
   <a class="skip" href="#main">Skip to content</a>
   <div class="progress" id="progress" aria-hidden="true"></div>
 
-  <!-- ===== The plate is fixed to the bottom of the screen but sits BEHIND the page sections: the second section
-       covers it as you scroll, and the transparent footer lets it show again. (The lid lives in the hero and scrolls with it.) ===== -->
-  <div class="plate-layer" aria-hidden="true">
-    <div id="plate-shadow" class="cl-shadow"></div>
-    <img id="plate" class="cl-img" alt="" width="1200" height="800" decoding="async" src="images/cloche-cobalt.webp">
-  </div>
-
   <!-- ===== Navigation (slides away as you scroll down, back as you scroll up) ===== -->
   <header class="nav" id="top">
     <a class="nav__brand" href="#hero" aria-label="The Reach Catering, home">REACH</a>
@@ -76,6 +69,16 @@
     </nav>
     <a class="btn btn--small" href="#contact">Contact Us</a>
   </header>
+
+  <!-- ===== The plate lives in a track that runs from the top of the page to the bottom of "Who's hungry?". Inside it the
+       layer is position: sticky, so the browser pins it to the bottom of the screen while you scroll, behind the page sections
+       (the second section covers it), and lets it travel up with the page at the very end: no scripting on scroll, so it can't
+       lag or jump on phones. (The lid lives in the hero and scrolls with it.) ===== -->
+  <div class="plate-track">
+  <div class="plate-layer" aria-hidden="true">
+    <div id="plate-shadow" class="cl-shadow"></div>
+    <img id="plate" class="cl-img" alt="" width="1200" height="800" decoding="async" src="images/cloche-cobalt.webp">
+  </div>
 
   <main id="main">
     <!-- ===== Hero: the animated logo. The cloche is part of this moment. ===== -->
@@ -332,15 +335,16 @@
       </div>
     </section>
   </main>
+  <!-- ===== "Who's hungry?" — the fixed plate lands in the slot right under the words (it is the end of the plate track). ===== -->
+  <div class="landing">
+    <p class="hungry" id="hungry">Who&rsquo;s hungry?</p>
+    <div class="plate-slot" id="plate-slot" aria-hidden="true"></div>
+  </div>
+  </div><!-- /plate-track -->
 
-  <!-- ===== Footer (transparent). "Who's hungry?" comes straight after Contact Us; the fixed plate lands in the slot right
-       under the words (hero.js), and the thin details sit below the plate. ===== -->
+
+  <!-- ===== Footer: the thin details, below the plate. ===== -->
   <footer class="footer" id="footer">
-    <div class="landing">
-      <p class="hungry" id="hungry">Who&rsquo;s hungry?</p>
-      <div class="plate-slot" id="plate-slot" aria-hidden="true"></div>
-    </div>
-
     <div class="details">
       <div class="details__col">
         <p class="details__h">Contact Details</p>
@@ -380,9 +384,9 @@
     </p>
   </footer>
 
-  <script src="js/hero.js?v=20251021b"></script>
+  <script src="js/hero.js?v=20261024a"></script>
   <script src="js/main.js?v=20251021b"></script>
   <script type="module" src="js/forms.js"></script>
-  <script src="js/motion.js?v=20251021b"></script>
+  <script src="js/motion.js?v=20261024a"></script>
 </body>
 </html>

@@ -1,7 +1,7 @@
 /* The Reach Catering
    Stacking order (back to front):
-     1  .plate-layer  the plate, fixed to the bottom of the screen but behind the sections: the second section
-                    covers it, the transparent footer shows it again
+     1  .plate-layer  the plate, pinned (sticky) to the bottom of the screen but behind the sections: the second section
+                    covers it, the dark landing block lets it show again
      2  hero / sections / footer. The lid is inside the hero, so it scrolls away with it.
      10 .nav, 11 .progress
 
@@ -41,7 +41,12 @@ a { color: inherit; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 
 /* ---------- Fixed plate ---------- */
-.plate-layer { position: fixed; top: 0; left: 0; right: 0; height: 100vh; height: 100svh; z-index: 1; pointer-events: none; contain: layout style; }
+.plate-track { position: relative; } /* no z-index: it must not become a stacking context */
+/* Sticky, not fixed or scripted: pinned to the screen for the whole track, then it travels with the page when the track ends
+   (just under "Who's hungry?"). The browser does this on its own thread, so it is smooth on phones. <main> is pulled up
+   by the layer's height so the layer takes no room in the page; the layer still ends with the track. */
+.plate-layer + main { margin-top: -100vh; margin-top: -100svh; }
+.plate-layer { position: sticky; top: 0; left: 0; right: 0; height: 100vh; height: 100svh; z-index: 1; pointer-events: none; contain: layout style; }
 .cl-img { position: absolute; height: auto; visibility: hidden; user-select: none; }
 .cl-shadow {
   position: absolute; opacity: 0;
@@ -283,14 +288,14 @@ section[id], footer[id] { scroll-margin-top: 3rem; }
 .form .btn[disabled] { opacity: .5; cursor: progress; }
 
 /* ---------- Footer ---------- */
-/* Transparent on purpose. "Who's hungry?" sits right after Contact Us. The plate is fixed to the bottom of the screen
-   until this .plate-slot arrives; then it lands in it (hero.js) and scrolls with the page, so the thin details below
-   sit under the plate. */
-.footer { position: relative; z-index: 0; /* below the plate layer (z 1), so the plate still shows over the dark footer */ background: var(--ink-deep); color: var(--bg); padding: clamp(.5rem, 1.5vw, 1.25rem) var(--pad) 1.5rem; }
-.landing { text-align: center; }
+/* "Who's hungry?" sits right after Contact Us and is the end of the plate track. It is dark and sits below the plate layer
+   (z 0 against its z 1), so the plate shows over it. The bottom padding is the space under the plate's base, so the track
+   (and so the sticky plate) ends with the plate's base level with the bottom of the slot. */
+.landing { position: relative; z-index: 0; background: var(--ink-deep); color: var(--bg); text-align: center; padding: clamp(.5rem, 1.5vw, 1.25rem) var(--pad) 7vh; padding-bottom: var(--plate-below, 7svh); }
+.footer { position: relative; background: var(--ink-deep); color: var(--bg); padding: 0 var(--pad) 1.5rem; }
 /* line-height 1 so the line box reaches the descenders (g, y). */
 .hungry { font-weight: 200; font-size: clamp(3rem, min(12vw, 17vh), 11rem); font-size: clamp(3rem, min(12vw, 17svh), 11rem); line-height: 1; letter-spacing: -.02em; }
-.plate-slot { height: var(--plate-vis, 9vw); margin: clamp(.25rem, 1vw, .75rem) auto clamp(3rem, 7vw, 5.5rem); }
+.plate-slot { height: var(--plate-vis, 9vw); margin: clamp(.25rem, 1vw, .75rem) auto 0; }
 
 /* The details: thin type, small, hairline-ruled. */
 .details { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 1.75rem 2.5rem; max-width: var(--max); margin: 0 auto; padding-top: 1.5rem; border-top: 1px solid rgba(247, 224, 139, .25); font-weight: 200; font-size: .92rem; line-height: 1.65; }

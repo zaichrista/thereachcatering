@@ -226,7 +226,7 @@
   // --- Scroll-linked updates (one rAF-throttled pass) -----------------------------------------
   const nav = $('.nav');
   const progress = $('#progress');
-  const darkSections = $$('.marquee, .band, .testimonials, .footer');
+  const darkSections = $$('.marquee, .band, .testimonials, .landing, .footer');
   const accentSection = $('.testimonials');
   const heroSection = $('.hero');
   let lastScroll = scrollY, ticking = false;

@@ -180,21 +180,12 @@
     });
     // The footer's landing slot is this tall (plate rim to base), so the plate lands exactly in it.
     root.style.setProperty('--plate-vis', `${0.25 * c.H}px`);
-    updateLanding();
+    root.style.setProperty('--plate-below', `${vh - c.footY}px`); // the track ends this far under the plate's base
   }
 
-  // The plate stays pinned to the bottom of the screen until the landing slot (under "Who's hungry?") reaches its
-  // resting place; from then on it moves up with the page, so the footer details sit below the plate.
-  const slot = document.getElementById('plate-slot');
-  let lastLift = 0;
-  function updateLanding() {
-    if (!slot) return;
-    const lift = Math.round(Math.min(0, slot.getBoundingClientRect().bottom - c.footY) * 2) / 2;
-    if (lift === lastLift) return;
-    lastLift = lift;
-    plateLayer.style.transform = lift ? `translate3d(0, ${lift}px, 0)` : '';
-  }
-
+  // The plate stays pinned to the bottom of the screen until the end of the plate track (the landing slot under "Who's
+  // hungry?"), then moves up with the page. That is all CSS now (.plate-layer is position: sticky), so scrolling needs no
+  // script; the only thing set here is how much room the track leaves under the plate's base.
   let jigAt = null;
   function renderCloche(ms) {
     const vh = stableH(), H = c.H, W = c.W;
@@ -430,9 +421,6 @@
   }
   addEventListener('pointermove', poke);
   addEventListener('pointerdown', poke);
-  let landTick = false;
-  addEventListener('scroll', () => { if (!landTick) { landTick = true; requestAnimationFrame(() => { landTick = false; updateLanding(); }); } }, { passive: true });
-  addEventListener('load', updateLanding);
   // Phones fire "resize" whenever the address bar slides in or out; nothing needs re-laying-out for that.
   let seenW = innerWidth, seenH = stableH();
   addEventListener('resize', () => {
