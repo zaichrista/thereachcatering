@@ -5,22 +5,23 @@
      2  hero / sections / footer. The lid is inside the hero, so it scrolls away with it.
      10 .nav, 11 .progress
 
-   Page rhythm: ivory → pomegranate marquee → sand → pale → sand → deep ink → pale (stacked cards) → cobalt → pale → footer.
+   Page rhythm: cream → cobalt marquee → sand → pale → sand → deep ink → pale (stacked cards) → cobalt → pale → footer.
 */
 
 :root {
-  --bg: #fbf7f0;          /* warm ivory */
-  --bg-alt: #f2e9da;      /* sand */
+  --bg: #fbf6ee;          /* light cream */
+  --bg-alt: #f5ebdc;      /* cream (paper) */
   --ink: #1d1d1b;
-  --ink-deep: #2a1215;    /* aubergine-black */
-  --muted: #6b5a57;
+  --ink-deep: #2a0e18;    /* aubergine-black */
+  --muted: #6b5d57;
   --line: rgba(29, 29, 27, .14);
-  --cobalt: #7a1f2b;      /* pomegranate (lead colour; name kept to avoid renaming every rule) */
-  --saffron: #e3a02b;     /* warm highlight */
-  --accent: #d63a1a;      /* warm vermilion: CTAs only (white text 4.7:1) */
-  --accent-deep: #b52d12;
-  --accent-tint: #fde8e1; /* CTA hover fill, soft highlights */
-  --sand: #f2e9da;        /* base sand */
+  --cobalt: #1b46e6;      /* hero */
+  --butter: #f6d54a;     /* spark */
+  --rose: #f4b6c6;       /* surprise */
+  --accent: #f0471f;      /* tomato: CTAs only */
+  --accent-deep: #b8330f;
+  --accent-tint: #f4b6c6; /* CTA hover fill (rose) */
+  --sand: #f5ebdc;        /* cream */
   --font: "sets-grotesk-m", "Helvetica Neue", Helvetica, Arial, sans-serif;
   --ease: cubic-bezier(.2, .8, .2, 1);
 
@@ -46,7 +47,7 @@ a { color: inherit; }
 .cl-img { position: absolute; height: auto; visibility: hidden; user-select: none; }
 .cl-shadow {
   position: absolute; opacity: 0;
-  background: radial-gradient(closest-side, rgba(42, 18, 21, .26) 0%, rgba(42, 18, 21, .15) 50%, rgba(42, 18, 21, 0) 100%);
+  background: radial-gradient(closest-side, rgba(42, 14, 24, .26) 0%, rgba(42, 14, 24, .15) 50%, rgba(42, 14, 24, 0) 100%);
 }
 
 /* ---------- Scroll progress + navigation ---------- */
@@ -137,7 +138,7 @@ section[id], footer[id] { scroll-margin-top: 3rem; }
 .marquee { position: relative; z-index: 2; background: var(--cobalt); color: #fff; overflow: hidden; padding: clamp(1.2rem, 3vw, 2.4rem) 0; }
 .marquee__track { display: flex; width: max-content; will-change: transform; }
 .marquee__set { display: flex; align-items: center; gap: clamp(1.5rem, 4vw, 4rem); padding-right: clamp(1.5rem, 4vw, 4rem); white-space: nowrap; font-weight: 200; font-size: clamp(2.6rem, 9vw, 9rem); line-height: 1.1; letter-spacing: -.03em; }
-.marquee__set i { font-style: normal; color: var(--saffron); }
+.marquee__set i { font-style: normal; color: var(--butter); }
 
 /* ---------- About ---------- */
 .about__grid { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: clamp(3rem, 10vw, 10rem); align-items: start; }
@@ -188,7 +189,7 @@ section[id], footer[id] { scroll-margin-top: 3rem; }
 
 /* ---------- Every event is unique ---------- */
 .band { position: relative; z-index: 2; background: var(--ink-deep); color: #fff; overflow: hidden; padding: clamp(5rem, 12vw, 10rem) var(--pad); }
-.band::before { content: ""; position: absolute; right: -15%; top: 50%; width: 80vmin; height: 80vmin; width: 80svmin; height: 80svmin; transform: translateY(-50%); background: radial-gradient(closest-side, rgba(122, 31, 43, .8), rgba(122, 31, 43, 0)); pointer-events: none; }
+.band::before { content: ""; position: absolute; right: -15%; top: 50%; width: 80vmin; height: 80vmin; width: 80svmin; height: 80svmin; transform: translateY(-50%); background: radial-gradient(closest-side, rgba(27, 70, 230, .55), rgba(27, 70, 230, 0)); pointer-events: none; }
 .band__grid { position: relative; display: grid; grid-template-columns: 1.1fr .9fr; gap: clamp(2rem, 6vw, 6rem); align-items: center; }
 .band__text p { color: rgba(255, 255, 255, .78); max-width: 32em; margin-top: 1.2rem; }
 .band__text .btn { margin-top: 2.25rem; }
@@ -227,7 +228,7 @@ section[id], footer[id] { scroll-margin-top: 3rem; }
 .scard p:last-child { max-width: 36em; margin-top: .4rem; opacity: .85; }
 .scard--cobalt { background: var(--cobalt); color: #fff; }
 .scard--ink { background: var(--ink-deep); color: #fff; }
-.scard--pale { background: var(--bg-alt); border: 1px solid var(--line); }
+.scard--pale { background: var(--rose); border: 1px solid var(--line); }
 .scard--white { background: #fff; border: 1px solid var(--line); }
 .scard--pale .scard__n, .scard--white .scard__n { color: var(--cobalt); }
 
@@ -307,9 +308,9 @@ section[id], footer[id] { scroll-margin-top: 3rem; }
 /* ---------- Small screens ---------- */
 @media (max-width: 960px) {
   /* On phones the transparent nav sat on top of the page text; once scrolled it gets a soft frosted backdrop (motion.js adds .nav--solid). */
-  .nav::before { content: ""; position: absolute; inset: 0; z-index: -1; opacity: 0; transition: opacity .3s ease; background: rgba(251, 247, 240, .82); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); }
+  .nav::before { content: ""; position: absolute; inset: 0; z-index: -1; opacity: 0; transition: opacity .3s ease; background: rgba(251, 246, 238, .82); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); }
   .nav--solid::before { opacity: 1; }
-  .nav--solid.nav--light::before { background: rgba(42, 18, 21, .72); }
+  .nav--solid.nav--light::before { background: rgba(42, 14, 24, .72); }
   .nav__links { display: none; }
   .welcome__row, .band__grid, .contact__grid { grid-template-columns: 1fr; }
   .about__grid { grid-template-columns: 1fr; }
