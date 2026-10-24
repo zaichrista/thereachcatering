@@ -288,13 +288,13 @@ section[id], footer[id] { scroll-margin-top: 3rem; }
 .form .btn[disabled] { opacity: .5; cursor: progress; }
 
 /* ---------- Footer ---------- */
-/* "Who's hungry?" sits right after Contact Us and is the end of the plate track. It is dark and sits below the plate layer
-   (z 0 against its z 1), so the plate shows over it. The bottom padding is the space under the plate's base, so the track
+/* "Who's hungry?" sits right after Contact Us and is the end of the plate track. Its dark background sits below the plate layer
+   (z auto against its z 1), so the plate shows over it, while the words sit above the plate. The bottom padding is the space under the plate's base, so the track
    (and so the sticky plate) ends with the plate's base level with the bottom of the slot. */
-.landing { position: relative; z-index: 0; background: var(--ink-deep); color: var(--bg); text-align: center; padding: clamp(.5rem, 1.5vw, 1.25rem) var(--pad) 7vh; padding-bottom: var(--plate-below, 7svh); }
+.landing { position: relative; background: var(--ink-deep); color: var(--bg); text-align: center; padding: clamp(.5rem, 1.5vw, 1.25rem) var(--pad) 7vh; padding-bottom: var(--plate-below, 7svh); }
 .footer { position: relative; background: var(--ink-deep); color: var(--bg); padding: 0 var(--pad) 1.5rem; }
 /* line-height 1 so the line box reaches the descenders (g, y). */
-.hungry { font-weight: 200; font-size: clamp(3rem, min(12vw, 17vh), 11rem); font-size: clamp(3rem, min(12vw, 17svh), 11rem); line-height: 1; letter-spacing: -.02em; }
+.hungry { position: relative; z-index: 2; /* the words sit above the plate layer (z 1); .landing has no z-index, so this joins the page's stacking order */ font-weight: 200; font-size: clamp(3rem, min(12vw, 17vh), 11rem); font-size: clamp(3rem, min(12vw, 17svh), 11rem); line-height: 1; letter-spacing: -.02em; }
 .plate-slot { height: var(--plate-vis, 9vw); margin: clamp(.25rem, 1vw, .75rem) auto 0; }
 
 /* The details: thin type, small, hairline-ruled. */
