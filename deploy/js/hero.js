@@ -112,6 +112,7 @@
     svg.setAttribute('viewBox', `${cx - W / 2} ${cy - H / 2} ${W} ${H}`);
     viewTop = cy - H / 2;
     logoBottom = vh / 2 + (LOGO_BOTTOM - cy) * scale;
+    root.style.setProperty('--cta-top', `${(logoBottom + 20).toFixed(0)}px`); // phones: the hero line and buttons sit between the logo and the cloche
   }
 
   // --- Timeline (ms) -----------------------------------------------------------------
@@ -150,6 +151,7 @@
   const FOOT_Y = 0.93;       // the plate's base sits at 93% of the viewport height
   const LOGO_BOTTOM = 160;   // bottom of "catering" (descenders included) in logo units
   const KNOB_CLEARANCE = 12; // px of clear space between "catering" and the top of the lid's knob
+const CTA_ROOM = 140;      // on phones: the same gap, with the hero line and buttons in it
   plate.style.clipPath = `inset(${ART.split * 100}% 0 0 0)`;
   dome.style.clipPath = `inset(0 0 ${(1 - ART.split) * 100}% 0)`;
   dome.style.transformOrigin = '50% 64%'; // the lid rocks about its rim
@@ -160,7 +162,7 @@
     c.footY = vh * FOOT_Y;
     // Size the cloche so the top of its knob stops below "catering": the visible cloche (knob to plate base) is
     // ~70.8% of the image height. Never bigger than 30% of the width (60% on phones).
-    const room = c.footY - (logoBottom + KNOB_CLEARANCE);
+    const room = c.footY - (logoBottom + (vw < 700 ? CTA_ROOM : KNOB_CLEARANCE)); // phones leave room for the hero line and buttons
     const fitW = (Math.max(room, 80) / 0.708) * 1.5 * ART.plateW;
     c.plateW = Math.min(fitW, vw < 700 ? vw * 0.6 : vw * 0.3);
     c.W = c.plateW / ART.plateW;      // image width, so the plate is plateW wide

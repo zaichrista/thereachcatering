@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Event Catering London | The Reach Catering</title>
-  <meta name="description" content="London event caterers since 2002. Canapés, buffets, seated dining and conference catering for corporate events, weddings and private parties. Request a proposal.">
+  <meta name="description" content="London event caterers since 2002. Breakfast and meeting catering, working lunches and sharing feasts, canapés and receptions, and corporate dinners for corporate events, weddings and private parties. Request a proposal.">
   <link rel="canonical" href="https://www.thereachcatering.com/">
   <meta name="theme-color" content="#C8102E">
   <link rel="icon" href="favicon.png" type="image/png" sizes="256x256">
@@ -23,7 +23,7 @@
     "name": "The Reach Catering",
     "url": "https://www.thereachcatering.com/",
     "image": "https://www.thereachcatering.com/images/cloche-cobalt.png",
-    "description": "London event caterers since 2002: canapés, buffets, seated dining and conference catering for corporate events, weddings and private celebrations.",
+    "description": "London event caterers since 2002: breakfast and meeting catering, working lunches and sharing feasts, canapés and receptions, and corporate dinners for corporate events, weddings and private celebrations.",
     "telephone": "+447894089594",
     "email": "info@thereachcatering.com",
     "foundingDate": "2002",
@@ -43,7 +43,7 @@
   <!-- Adobe Fonts kit nyc5qch: Sets Grotesk M. Allowed domains are managed at fonts.adobe.com > Web Projects -->
   <link rel="stylesheet" href="https://use.typekit.net/nyc5qch.css">
   <link rel="preload" as="image" href="images/cloche-cobalt.webp" type="image/webp">
-  <link rel="stylesheet" href="css/site.css?v=20261024b">
+  <link rel="stylesheet" href="css/site.css?v=20261025f">
   <!-- 'is-loading' locks scrolling and hides the nav while the hero loader plays (hero.js removes it). The timeout is a
        safety net so the page can never stay locked. -->
   <script>
@@ -62,12 +62,12 @@
   <header class="nav" id="top">
     <a class="nav__brand" href="#hero" aria-label="The Reach Catering, home">REACH</a>
     <nav class="nav__links" aria-label="Main">
-      <a href="#about">About Us</a>
-      <a href="#menu">Our Catering Menu</a>
-      <a href="#services">Our Services</a>
+      <a href="#services">Services</a>
+      <a href="menus.html">Menus</a>
       <a href="#testimonials">Testimonials</a>
+      <a href="#about">About Us</a>
     </nav>
-    <a class="btn btn--small" href="#contact">Contact Us</a>
+    <a class="btn btn--small" href="#contact">Request a proposal</a>
   </header>
 
   <!-- ===== The plate lives in a track that runs from the top of the page to the bottom of "Who's hungry?". Inside it the
@@ -75,6 +75,12 @@
        (the second section covers it), and lets it travel up with the page at the very end: no scripting on scroll, so it can't
        lag or jump on phones. (The lid lives in the hero and scrolls with it.) ===== -->
   <div class="plate-track">
+  <!-- Hero backdrop (full window, behind the plate). Yellow for now. For a photo, add inside it:
+         <img src="images/hero.jpg" alt="" fetchpriority="high">
+       For a video (muted + playsinline is what lets it autoplay on phones; keep it short and compressed, ideally under ~5 MB):
+         <video src="images/hero.mp4" poster="images/hero.jpg" autoplay muted loop playsinline preload="auto"></video>
+       Both fill the window (object-fit: cover). The red logo needs contrast: if the footage is busy, darken or lighten it. -->
+  <div class="hero-bg" aria-hidden="true"></div>
   <div class="plate-layer" aria-hidden="true">
     <div id="plate-shadow" class="cl-shadow"></div>
     <img id="plate" class="cl-img" alt="" width="1200" height="800" decoding="async" src="images/cloche-cobalt.webp">
@@ -83,7 +89,7 @@
   <main id="main">
     <!-- ===== Hero: the animated logo. The cloche is part of this moment. ===== -->
     <section class="hero" id="hero" aria-labelledby="hero-title">
-      <p class="visually-hidden" id="hero-title">The Reach Catering</p>
+      <h1 class="visually-hidden" id="hero-title">The Reach Catering: event caterers in London</h1>
       <img id="lid" class="cl-img" alt="" aria-hidden="true" src="images/cloche-cobalt.webp">
       <svg id="logo" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
         <!-- Paths are in "ending point" coordinates (reach ending point.svg). R, E, C, H are drawn by hero.js. -->
@@ -104,126 +110,115 @@
           <text id="pre-pct" class="pre-pct" text-anchor="middle">0%</text>
         </g>
       </svg>
-    </section>
-
-    <!-- ===== Welcome ===== -->
-    <section class="section welcome" id="welcome" aria-labelledby="welcome-title">
-      <div class="wrap">
-        <p class="eyebrow reveal">London event caterers · Proudly in hospitality since 2002</p>
-        <h1 class="mega" id="welcome-title" data-split>Exceptional Catering For Every Occasion</h1>
-        <p class="kinds reveal" aria-label="What we cater">
-          <span>Corporate Events</span><span>Private Celebrations</span><span>Weddings</span><span>Bespoke Catering</span>
-        </p>
-        <div class="welcome__row">
-          <p class="tagline reveal">Exceptional Food. Memorable Events.</p>
-          <div class="welcome__text reveal">
-            <p class="lede">From elegant corporate gatherings to unforgettable private celebrations, The Reach Catering brings exceptional food, beautiful presentation and warm, attentive service to every occasion.</p>
-            <a class="btn" href="#contact">Contact Us</a>
-          </div>
+      <!-- The promise and the two ways forward: act (rosso button) or explore (plain link). Fades in once the logo has played. -->
+      <div class="hero__cta">
+        <p class="hero__line">Exceptional food. Memorable events.</p>
+        <div class="hero__actions">
+          <a class="btn" href="#contact">Request a proposal</a>
+          <a class="link" href="menus.html">See our menus</a>
         </div>
       </div>
     </section>
 
-    <!-- ===== Marquee: scrolls sideways; speed and direction follow your scrolling ===== -->
-    <section class="marquee" id="marquee" aria-label="What we cater">
-      <div class="marquee__track" id="marquee-track">
-        <p class="marquee__set">
-          <span>Corporate Events</span><i aria-hidden="true">•</i><span>Private Celebrations</span><i aria-hidden="true">•</i><span>Weddings</span><i aria-hidden="true">•</i><span>Bespoke Catering</span><i aria-hidden="true">•</i>
-        </p>
-      </div>
-    </section>
-
-    <!-- ===== About Us: the year stays put while the story scrolls past ===== -->
-    <section class="section section--alt about" id="about" aria-labelledby="about-title">
-      <div class="wrap about__grid">
-        <div class="about__year" aria-hidden="true"><span id="year-big" data-count="2002">2002</span></div>
-        <div class="about__text">
-          <p class="eyebrow reveal" id="about-title">About Us</p>
-          <p class="lede reveal">With a passion for exceptional food and hospitality, The Reach Catering brings together over two decades of experience in the hospitality industry, with roots dating back to 2002.</p>
-          <p class="body reveal">From corporate events and business gatherings to weddings, private celebrations and special occasions, we believe every event deserves delicious food, thoughtful presentation and outstanding service.</p>
-          <p class="body reveal">Our experienced team takes pride in creating memorable catering experiences, combining quality ingredients, beautifully prepared dishes and a personal approach to every occasion.</p>
-          <p class="body reveal">Whether you're hosting an intimate gathering or a large-scale event, we are here to make every moment special.</p>
-          <a class="btn reveal" href="#contact">Contact Us</a>
-        </div>
-      </div>
-    </section>
-
-    <!-- ===== What We Offer: the sentence lights up word by word as you scroll ===== -->
-    <section class="section offer" id="offer" aria-labelledby="offer-title">
+    <!-- ===== Our Services: the four kinds of event. Each card: act (enquire, with the event type pre-selected) or explore (its menu). ===== -->
+    <section class="section services" id="services" aria-labelledby="services-title">
       <div class="wrap">
-        <p class="eyebrow reveal" id="offer-title">What We Offer</p>
-        <p class="statement" id="statement">From corporate conferences and business lunches to weddings, private parties and special celebrations, we offer tailored catering solutions designed around your event.</p>
-        <div class="offer__row">
+        <div class="services__head">
+          <h2 class="mega mega--sm" id="services-title" data-split>From intimate gatherings to large-scale corporate events</h2>
           <p class="body reveal">Whether it's a selection of elegant canapés, a generous buffet or a beautifully presented dining experience, our team takes care of the details so you can enjoy the occasion.</p>
-          <a class="btn btn--ghost reveal" href="#services">Learn More</a>
+        </div>
+        <div class="stack">
+          <article class="scard scard--olive">
+            <span class="scard__n" aria-hidden="true">01</span>
+            <h3>Corporate Events</h3>
+            <p class="item__sub">Business Done Beautifully</p>
+            <p>Conferences, networking receptions, working lunches and breakfast meetings, catered to your schedule and guest numbers.</p>
+            <div class="scard__actions"><a class="btn btn--small" href="#contact" data-event="Corporate event">Enquire</a><a class="link" href="menus.html#breakfast">See the menu</a></div>
+          </article>
+          <article class="scard scard--ink">
+            <span class="scard__n" aria-hidden="true">02</span>
+            <h3>Weddings</h3>
+            <p class="item__sub">Your Day, Beautifully Served</p>
+            <p>From canapé receptions to seated dining, with menus shaped around your day, your guests and their dietary requirements.</p>
+            <div class="scard__actions"><a class="btn btn--small" href="#contact" data-event="Wedding">Enquire</a><a class="link" href="menus.html#dinners">See the menu</a></div>
+          </article>
+          <article class="scard scard--pale">
+            <span class="scard__n" aria-hidden="true">03</span>
+            <h3>Private Celebrations</h3>
+            <p class="item__sub">Every Occasion, Catered</p>
+            <p>Birthdays, anniversaries and family gatherings, from relaxed sharing feasts to something more formal.</p>
+            <div class="scard__actions"><a class="btn btn--small" href="#contact" data-event="Private celebration">Enquire</a><a class="link" href="menus.html#lunches">See the menu</a></div>
+          </article>
+          <article class="scard scard--white">
+            <span class="scard__n" aria-hidden="true">04</span>
+            <h3>Bespoke Catering</h3>
+            <p class="item__sub">Something Different</p>
+            <p>Our chefs create bespoke menus inspired by international flavours, with equipment, tableware and staffing arranged for you.</p>
+            <div class="scard__actions"><a class="btn btn--small" href="#contact" data-event="Bespoke / other">Enquire</a><a class="link" href="menus.html">See the menus</a></div>
+          </article>
         </div>
       </div>
     </section>
 
     <!-- ===== Our Catering Menus: open a menu and the lid lifts ===== -->
     <section class="section section--sand menu" id="menu" aria-labelledby="menu-title">
-      <div class="wrap">
-        <p class="eyebrow reveal" id="menu-title">Our Catering Menus</p>
-        <h2 class="mega mega--sm" data-split>Thoughtfully Created for Every Occasion</h2>
+      <div class="wrap menu__grid">
+        <div class="menu__head">
+        <h2 class="mega mega--sm" id="menu-title" data-split>Thoughtfully Created for Every Occasion</h2>
         <div class="intro reveal">
           <p class="body">From intimate gatherings to large-scale corporate events, our catering menus bring together fresh ingredients, international flavours and beautiful presentation.</p>
           <p class="body">Whether you're planning a business conference, wedding, private celebration or networking reception, our experienced team will create a menu tailored to your occasion, preferences and dietary requirements.</p>
+        </div>
+        <a class="btn reveal" href="menus.html">See our menus</a>
         </div>
 
         <div class="acc" id="menu-acc">
           <article class="acc__item reveal">
             <h3 class="acc__h"><button class="acc__btn" type="button" aria-expanded="true" aria-controls="m1" id="m1-btn">
               <span class="acc__n" aria-hidden="true">01</span>
-              <span class="acc__title">Canapés &amp; Bowl Food</span>
+              <span class="acc__title">Breakfast &amp; Meetings</span>
               <span class="cloche acc__icon" aria-hidden="true"><img class="cloche__plate" src="images/cloche-cobalt.webp" alt=""><img class="cloche__dome" src="images/cloche-cobalt.webp" alt=""></span>
             </button></h3>
             <div class="acc__panel" id="m1" role="region" aria-labelledby="m1-btn"><div class="acc__inner">
-              <p class="item__sub">Small Bites, Big Impressions</p>
-              <p>Perfect for cocktail receptions, networking events and celebrations. Discover an inviting selection of elegant canapés, creative finger food and beautifully presented bowl dishes, designed for effortless social dining.</p>
+              <p class="item__sub">The Perfect Start to Every Event</p>
+              <p class="acc__desc">Keep your guests refreshed and energised with our breakfast selections, tea and coffee services and meeting refreshments. From morning meetings to full-day conferences, we provide reliable catering tailored to your schedule.</p>
+              <p class="acc__more"><a class="btn btn--small" href="#contact" data-menu="Breakfast &amp; Meetings">Enquire for pricing</a><a class="link" href="menus.html#breakfast">See this menu</a></p>
             </div></div>
           </article>
           <article class="acc__item reveal">
             <h3 class="acc__h"><button class="acc__btn" type="button" aria-expanded="false" aria-controls="m2" id="m2-btn">
               <span class="acc__n" aria-hidden="true">02</span>
-              <span class="acc__title">Buffets &amp; Sharing Feasts</span>
+              <span class="acc__title">Working Lunches &amp; Sharing Feasts</span>
               <span class="cloche acc__icon" aria-hidden="true"><img class="cloche__plate" src="images/cloche-cobalt.webp" alt=""><img class="cloche__dome" src="images/cloche-cobalt.webp" alt=""></span>
             </button></h3>
             <div class="acc__panel" id="m2" role="region" aria-labelledby="m2-btn"><div class="acc__inner">
               <p class="item__sub">Generous, Relaxed &amp; Full of Flavour</p>
-              <p>From Mediterranean-inspired spreads to international favourites, our buffets and sharing menus bring people together over delicious food. Ideal for corporate lunches, family celebrations and larger gatherings, with flexible options to suit your event.</p>
+              <p class="acc__desc">From Mediterranean-inspired spreads to international favourites, our working lunches and sharing feasts bring people together over delicious food. Ideal for corporate lunches, family celebrations and larger gatherings, with flexible options to suit your event.</p>
+              <p class="acc__more"><a class="btn btn--small" href="#contact" data-menu="Working Lunches &amp; Sharing Feasts">Enquire for pricing</a><a class="link" href="menus.html#lunches">See this menu</a></p>
             </div></div>
           </article>
           <article class="acc__item reveal">
             <h3 class="acc__h"><button class="acc__btn" type="button" aria-expanded="false" aria-controls="m3" id="m3-btn">
               <span class="acc__n" aria-hidden="true">03</span>
-              <span class="acc__title">Seated Dining</span>
+              <span class="acc__title">Canapés &amp; Working Receptions</span>
               <span class="cloche acc__icon" aria-hidden="true"><img class="cloche__plate" src="images/cloche-cobalt.webp" alt=""><img class="cloche__dome" src="images/cloche-cobalt.webp" alt=""></span>
             </button></h3>
             <div class="acc__panel" id="m3" role="region" aria-labelledby="m3-btn"><div class="acc__inner">
-              <p class="item__sub">Beautifully Served, Thoughtfully Prepared</p>
-              <p>For occasions that call for a more traditional dining experience, we offer bespoke two- and three-course menus. From elegant starters to carefully prepared main courses and indulgent desserts, every detail is designed around your event.</p>
+              <p class="item__sub">Small Bites, Big Impressions</p>
+              <p class="acc__desc">Perfect for cocktail receptions, networking events and celebrations. Discover an inviting selection of elegant canapés, creative finger food and beautifully presented bowl dishes, designed for effortless social dining.</p>
+              <p class="acc__more"><a class="btn btn--small" href="#contact" data-menu="Canapés &amp; Working Receptions">Enquire for pricing</a><a class="link" href="menus.html#canapes">See this menu</a></p>
             </div></div>
           </article>
           <article class="acc__item reveal">
             <h3 class="acc__h"><button class="acc__btn" type="button" aria-expanded="false" aria-controls="m4" id="m4-btn">
               <span class="acc__n" aria-hidden="true">04</span>
-              <span class="acc__title">Breakfast &amp; Conference Catering</span>
+              <span class="acc__title">Corporate Dinners &amp; Full Service Events</span>
               <span class="cloche acc__icon" aria-hidden="true"><img class="cloche__plate" src="images/cloche-cobalt.webp" alt=""><img class="cloche__dome" src="images/cloche-cobalt.webp" alt=""></span>
             </button></h3>
             <div class="acc__panel" id="m4" role="region" aria-labelledby="m4-btn"><div class="acc__inner">
-              <p class="item__sub">The Perfect Start to Every Event</p>
-              <p>Keep your guests refreshed and energised throughout the day with our breakfast selections, working lunches, tea and coffee services, and conference refreshments. From morning meetings to full-day events, we provide reliable catering tailored to your schedule.</p>
-            </div></div>
-          </article>
-          <article class="acc__item reveal">
-            <h3 class="acc__h"><button class="acc__btn" type="button" aria-expanded="false" aria-controls="m5" id="m5-btn">
-              <span class="acc__n" aria-hidden="true">05</span>
-              <span class="acc__title">Drinks &amp; Reception Packages</span>
-              <span class="cloche acc__icon" aria-hidden="true"><img class="cloche__plate" src="images/cloche-cobalt.webp" alt=""><img class="cloche__dome" src="images/cloche-cobalt.webp" alt=""></span>
-            </button></h3>
-            <div class="acc__panel" id="m5" role="region" aria-labelledby="m5-btn"><div class="acc__inner">
-              <p class="item__sub">Raise a Glass to Every Occasion</p>
-              <p>Complete your event with a selection of welcome drinks, wines, beers, soft drinks and bespoke beverage packages. Our team can arrange professional bar service and drinks receptions to complement your catering experience.</p>
+              <p class="item__sub">Beautifully Served, Thoughtfully Prepared</p>
+              <p class="acc__desc">For occasions that call for a more traditional dining experience, we offer bespoke two- and three-course menus, from elegant starters to carefully prepared main courses and indulgent desserts. We can also coordinate equipment, tableware and staffing, so every detail is designed around your event.</p>
+              <p class="acc__more"><a class="btn btn--small" href="#contact" data-menu="Corporate Dinners &amp; Full Service Events">Enquire for pricing</a><a class="link" href="menus.html#dinners">See this menu</a></p>
             </div></div>
           </article>
         </div>
@@ -237,68 +232,31 @@
           <h2 class="mega mega--light" id="unique-title" data-split>Every Event Is Unique</h2>
           <p class="reveal">All our menus can be tailored to suit your guest numbers, dietary requirements, style of service and budget.</p>
           <p class="reveal">Contact our team to discuss your event and receive a personalised catering proposal.</p>
-          <a class="btn btn--light reveal" href="#contact">Enquire About Our Menus</a>
+          <a class="btn reveal" href="#contact">Request a proposal</a>
         </div>
         <div class="cloche serve" id="serve" aria-hidden="true"><img class="cloche__plate" src="images/cloche-cobalt.webp" alt=""><img class="cloche__dome" src="images/cloche-cobalt.webp" alt=""></div>
       </div>
     </section>
 
-    <!-- ===== Our Services: the cards stack over one another ===== -->
-    <section class="section services" id="services" aria-labelledby="services-title">
-      <div class="wrap">
-<div class="services__head" id="services-head">
-          <p class="eyebrow reveal" id="services-title">Our Services</p>
-          <h2 class="mega mega--sm" data-split>From intimate gatherings to large-scale corporate events</h2>
-          <p class="body reveal">The Reach Catering delivers exceptional food, attentive service and thoughtfully planned catering experiences. With hospitality experience dating back to 2002, we bring passion, flexibility and expertise to every occasion.</p>
-        </div>
-        <div class="stack" id="stack">
-          <article class="scard scard--cobalt" style="--i:0">
-            <span class="scard__n" aria-hidden="true">01</span>
-            <h3>Custom Menus</h3>
-            <p class="item__sub">Tailored to Your Taste</p>
-            <p>Every event is unique. Our chefs create bespoke menus inspired by international flavours, from elegant canapés and sharing platters to beautifully prepared buffets and seated dining experiences.</p>
-          </article>
-          <article class="scard scard--ink" style="--i:1">
-            <span class="scard__n" aria-hidden="true">02</span>
-            <h3>Professional Staff</h3>
-            <p class="item__sub">Service You Can Rely On</p>
-            <p>Our experienced chefs, hospitality staff and event supervisors ensure every occasion runs smoothly. From preparation to the final service, we take care of the details so you can enjoy your event.</p>
-          </article>
-          <article class="scard scard--pale" style="--i:2">
-            <span class="scard__n" aria-hidden="true">03</span>
-            <h3>Corporate &amp; Private Events</h3>
-            <p class="item__sub">Every Occasion, Beautifully Catered</p>
-            <p>From business conferences and networking receptions to weddings, birthdays and private celebrations, we provide flexible catering solutions tailored to your occasion, guest numbers and requirements.</p>
-          </article>
-          <article class="scard scard--white" style="--i:3">
-            <span class="scard__n" aria-hidden="true">04</span>
-            <h3>Complete Event Catering</h3>
-            <p class="item__sub">From Planning to Presentation</p>
-            <p>More than just delicious food, we can coordinate the catering essentials, including equipment, tableware, staffing and service arrangements, creating a seamless experience from start to finish.</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
     <!-- ===== Testimonials: a swipeable slider ===== -->
     <section class="section testimonials" id="testimonials" aria-labelledby="testimonials-title">
-      <div class="wrap">
-        <p class="eyebrow eyebrow--light reveal" id="testimonials-title">Testimonials</p>
-        <h2 class="mega mega--sm mega--light" data-split>Discover what our clients have to say about their experience with The Reach Catering</h2>
+ <div class="wrap testimonials__grid">
+      <div>
+        <h2 class="mega mega--sm mega--light" id="testimonials-title" data-split>Discover what our clients have to say about their experience with The Reach Catering</h2>
       </div>
       <div class="slider" id="slider" role="region" aria-roledescription="carousel" aria-label="Client testimonials">
         <div class="slider__track" id="slider-track" tabindex="0">
           <figure class="slide" aria-roledescription="slide" aria-label="1 of 3">
             <blockquote>&ldquo;The food was exceptional, and the team were professional, attentive and very accommodating of our dietary requirements. Everything was well organised, and they were wonderfully flexible when we needed to reschedule our celebration.&rdquo;</blockquote>
-            <figcaption><strong>Marsha Hernandez</strong> · Birthday Celebration</figcaption>
+            <figcaption>Marsha Hernandez · Birthday Celebration</figcaption>
           </figure>
           <figure class="slide" aria-roledescription="slide" aria-label="2 of 3">
             <blockquote>&ldquo;Delicious food, beautifully presented, with excellent service throughout. The team were incredibly professional and organised, managing every detail and keeping everything running smoothly, even with a tight schedule.&rdquo;</blockquote>
-            <figcaption><strong>Stephanie from London</strong> · Group Event</figcaption>
+            <figcaption>Stephanie from London · Group Event</figcaption>
           </figure>
           <figure class="slide" aria-roledescription="slide" aria-label="3 of 3">
             <blockquote>&ldquo;A wonderful experience from start to finish. The food was fresh and beautifully presented, and the team looked after everything so seamlessly. It made the whole evening feel effortless.&rdquo;</blockquote>
-            <figcaption><strong>Amelia Harrisson</strong> · Business Dinner</figcaption>
+            <figcaption>Amelia Harrisson · Business Dinner</figcaption>
           </figure>
         </div>
         <div class="slider__bar">
@@ -310,27 +268,66 @@
           </div>
         </div>
       </div>
+      </div>
+    </section>
+
+    <!-- ===== About Us (left) and how we work (right) ===== -->
+    <section class="section section--alt about" id="about" aria-labelledby="about-title">
+      <div class="wrap about__grid">
+        <div class="about__text">
+          <div class="about__year" aria-hidden="true"><span id="year-big" data-count="2002">2002</span></div>
+          <h2 class="visually-hidden" id="about-title">About Us</h2>
+          <p class="lede reveal">With a passion for exceptional food and hospitality, The Reach Catering brings together over two decades of experience in the hospitality industry, with roots dating back to 2002.</p>
+          <p class="body reveal">From corporate events and business gatherings to weddings, private celebrations and special occasions, we believe every event deserves delicious food, thoughtful presentation and outstanding service.</p>
+          <p class="body reveal">Whether you're hosting an intimate gathering or a large-scale event, we are here to make every moment special.</p>
+          <a class="btn reveal" href="#contact">Request a proposal</a>
+        </div>
+        <ul class="how">
+          <li class="reveal">
+            <h3>Custom Menus</h3>
+            <p class="item__sub">Tailored to Your Taste</p>
+            <p>Every event is unique. Our chefs create bespoke menus inspired by international flavours, from elegant canapés and sharing platters to beautifully prepared buffets and seated dining experiences.</p>
+          </li>
+          <li class="reveal">
+            <h3>Professional Staff</h3>
+            <p class="item__sub">Service You Can Rely On</p>
+            <p>Our experienced chefs, hospitality staff and event supervisors ensure every occasion runs smoothly. From preparation to the final service, we take care of the details so you can enjoy your event.</p>
+          </li>
+          <li class="reveal">
+            <h3>Complete Event Catering</h3>
+            <p class="item__sub">From Planning to Presentation</p>
+            <p>More than just delicious food, we can coordinate the catering essentials, including equipment, tableware, staffing and service arrangements, creating a seamless experience from start to finish.</p>
+          </li>
+        </ul>
+      </div>
     </section>
 
     <!-- ===== Contact Us (submitted to Wix Forms by js/forms.js) ===== -->
     <section class="section contact" id="contact" aria-labelledby="contact-title">
       <div class="wrap contact__grid">
         <div>
-          <p class="eyebrow reveal" id="contact-title">Contact Us</p>
-          <h2 class="mega mega--sm" data-split>Have a question or want to learn more about our catering services?</h2>
-          <p class="body reveal">Feel free to reach out to us.</p>
+          <h2 class="mega mega--sm" id="contact-title" data-split>Tell us about your event</h2>
+          <p class="body reveal">Have a question or want to learn more about our catering services? Tell us a little about your occasion and we will reply within one working day with a personalised catering proposal.</p>
         </div>
         <form id="contact-form" class="form" novalidate>
           <div class="form__grid">
             <label class="field"><span>Full Name *</span><input name="name" autocomplete="name" required maxlength="100"></label>
             <label class="field"><span>Phone *</span><input name="phone" type="tel" autocomplete="tel" required maxlength="40"></label>
             <label class="field field--wide"><span>Email *</span><input name="email" type="email" autocomplete="email" required maxlength="200"></label>
+            <label class="field field--event"><span>Event type</span><select name="event">
+              <option value="">Choose one</option>
+              <option>Corporate event</option><option>Wedding</option><option>Private celebration</option><option>Bespoke / other</option>
+            </select></label>
+            <label class="field field--date"><span>Event date</span><input name="date" type="date" autocomplete="off"></label>
+            <label class="field field--guests"><span>Guests</span><input name="guests" type="number" inputmode="numeric" min="1" max="5000" autocomplete="off"></label>
             <label class="field field--wide"><span>Message</span><textarea name="message" rows="4" maxlength="2900"></textarea></label>
           </div>
           <!-- Honeypot: humans never see this. forms.js silently drops submissions where it is filled. -->
+          <input type="hidden" name="menu"><!-- set when you arrive from a menu's "Enquire for pricing" -->
           <div class="hp" aria-hidden="true"><label>Website <input name="website" tabindex="-1" autocomplete="off"></label></div>
           <p class="form__status" id="form-status" role="status" aria-live="polite"></p>
-          <button class="btn" type="submit">Submit</button>
+          <button class="btn" type="submit">Send request</button>
+          <p class="form__note">We reply within one working day.</p>
         </form>
       </div>
     </section>
@@ -370,7 +367,7 @@
         <form id="newsletter-form" class="news" aria-labelledby="news-title" novalidate>
           <label class="field"><span class="visually-hidden">Enter Your Email</span><input name="email" type="email" placeholder="Enter Your Email" autocomplete="email" required></label>
           <label class="check"><input type="checkbox" name="optin"> <span>Yes, Subscribe me to newsletter</span></label>
-          <button class="btn btn--small btn--ghost" type="submit">Subscribe</button>
+          <button class="btn btn--small" type="submit">Subscribe</button>
           <p class="form__status" id="news-status" role="status" aria-live="polite"></p>
         </form>
       </div>
@@ -384,9 +381,10 @@
     </p>
   </footer>
 
-  <script src="js/hero.js?v=20261024a"></script>
-  <script src="js/main.js?v=20251021b"></script>
+  <script src="js/hero.js?v=20261025a"></script>
+  <script src="js/main.js?v=20261025b"></script>
   <script type="module" src="js/forms.js"></script>
-  <script src="js/motion.js?v=20261024a"></script>
+  <script src="js/slider.js?v=20261025a"></script>
+  <script src="js/motion.js?v=20261025b"></script>
 </body>
 </html>

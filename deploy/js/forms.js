@@ -6,11 +6,19 @@ import { createFormStore, FORM_ERROR } from './wix/form-store.js';
 const CONTACT_FORM_ID = 'ea11eeba-67bc-4ac0-9775-524d15f1138d';
 const NEWSLETTER_FORM_ID = '13812d54-ff20-4b22-a148-cdf7d1400c7c';
 
+// The Wix form has name, phone, email and a message. The event details the page also asks for (type, date, guests) are
+// written into the top of the message, so a proposal can be quoted from the enquiry alone; no change to the Wix form needed.
+const composeMessage = (formEl) => {
+  const v = (n) => (formEl.elements[n] ? formEl.elements[n].value.trim() : '');
+  const lines = [['Menu', v('menu')], ['Event type', v('event')], ['Event date', v('date')], ['Guests', v('guests')]].filter(([, x]) => x).map(([k, x]) => `${k}: ${x}`);
+  return [lines.join('\n'), v('message')].filter(Boolean).join('\n\n');
+};
+
 // Page control name -> how to find its schema field.
 const CONTACT_MAP = { name: 'text', phone: 'phone', email: 'email', message: 'textarea' };
 const NEWSLETTER_MAP = { email: 'email', optin: 'checkbox' };
 
-function wire({ formEl, statusEl, formId, map, honeypot, okMessage }) {
+function wire({ formEl, statusEl, formId, map, honeypot, okMessage, compose = {} }) {
   if (!formEl) return;
   const store = createFormStore({ formId });
   store.start();
@@ -60,7 +68,7 @@ function wire({ formEl, statusEl, formId, map, honeypot, okMessage }) {
         const input = formEl.elements[pageName];
         if (!field || !input) continue;
         pageByTarget[field.target] = pageName;
-        store.setValue(field.target, input.type === 'checkbox' ? input.checked : input.value.trim());
+        store.setValue(field.target, compose[pageName] ? compose[pageName](formEl) : input.type === 'checkbox' ? input.checked : input.value.trim());
       }
 
       const outcome = await store.submit({ currentTarget: formEl, preventDefault() {} });
@@ -90,6 +98,7 @@ wire({
   formId: CONTACT_FORM_ID,
   map: CONTACT_MAP,
   honeypot: 'website',
+  compose: { message: composeMessage },
   okMessage: 'Thank you! We have your message and will be in touch soon.',
 });
 

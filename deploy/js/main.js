@@ -22,8 +22,21 @@
 
 // Clicking the REACH wordmark returns to the hero at the very top of the page.
 document.querySelector('.nav__brand')?.addEventListener('click', (e) => {
+  if (!e.currentTarget.getAttribute('href').startsWith('#')) return; // on other pages the wordmark is an ordinary link home
   e.preventDefault();
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
   history.replaceState(null, '', location.pathname + location.search);
 });
+
+// A button that carries data-event (the service cards) pre-selects that event type in the enquiry form, and one that carries
+// data-menu (a menu's "Enquire for pricing") records which menu the enquiry is about. From the menus page the menu arrives as ?menu=.
+const enquiry = (name) => document.querySelector(`#contact-form [name="${name}"]`);
+document.addEventListener('click', (e) => {
+  const a = e.target.closest('[data-event], [data-menu]');
+  if (!a) return;
+  if (a.dataset.event && enquiry('event')) enquiry('event').value = a.dataset.event;
+  if (enquiry('menu')) enquiry('menu').value = a.dataset.menu || '';
+});
+const menuParam = new URLSearchParams(location.search).get('menu');
+if (menuParam && enquiry('menu')) enquiry('menu').value = menuParam;
