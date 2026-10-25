@@ -119,7 +119,7 @@ a { color: inherit; }
 .hero-bg { position: absolute; top: 0; left: 0; right: 0; height: 100vh; height: var(--hero-h); z-index: 0; overflow: hidden; background: var(--hero-fill); pointer-events: none; }
 .hero-bg > img, .hero-bg > video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .hero__cta { position: absolute; left: var(--pad); right: var(--pad); bottom: clamp(1.25rem, 6vh, 3.5rem); z-index: 3; display: flex; justify-content: space-between; align-items: flex-end; gap: 1rem 2rem; animation: cta-in 1s var(--ease) 1.2s both; }
-.hero__line { font-weight: var(--w-thin); font-size: clamp(1.5rem, min(2.6vw, 4.6vh), 2.6rem); line-height: 1.05; letter-spacing: -.02em; max-width: 8em; }
+.hero__line { font-weight: var(--w-thin); font-size: clamp(1.5rem, min(2.6vw, 4.6vh), 2.6rem); line-height: 1.05; letter-spacing: -.02em; max-width: 11em; }
 .hero__actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 1rem 1.5rem; }
 @keyframes cta-in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
 html.is-loading .hero__cta { animation: none; opacity: 0; } /* appears when the loader hands over: the animation starts as .is-loading goes */
@@ -163,9 +163,11 @@ section[id], footer[id] { scroll-margin-top: 4.5rem; }
 
 /* ---------- About ---------- */
 .about__grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(2rem, 7vw, 7rem); align-items: start; }
-.about__year { font-weight: var(--w-black); font-size: clamp(3.5rem, min(8vw, 14vh), 8rem); line-height: .85; letter-spacing: -.06em; color: var(--accent); font-variant-numeric: tabular-nums; margin-bottom: 1.25rem; }
-.about__text .lede { margin-bottom: 1rem; font-size: clamp(1.1rem, min(1.7vw, 3vh), 1.45rem); }
-.about__text .btn { margin-top: 1.75rem; }
+.about__year { font-weight: var(--w-black); font-size: clamp(2.75rem, min(5.5vw, 9vh), 5.5rem); line-height: .85; letter-spacing: -.06em; color: var(--accent); font-variant-numeric: tabular-nums; margin-bottom: .75rem; }
+.about .mega--sm, .faq .mega--sm, .contact .mega--sm { font-size: clamp(1.8rem, min(3.1vw, 5.4vh), 3rem); max-width: 18em; }
+.about__text .body { margin-top: .75rem; font-size: .95rem; }
+.about__text .lede { margin: .9rem 0 .75rem; font-size: clamp(1.05rem, min(1.5vw, 2.8vh), 1.3rem); }
+.about__text .btn { margin-top: 1.25rem; }
 
 /* How we work: the right-hand column, three ruled items */
 .how { list-style: none; padding: 0; border-top: 1px solid var(--ink); }
@@ -271,6 +273,33 @@ section[id], footer[id] { scroll-margin-top: 4.5rem; }
 @media (hover: hover) { .round:hover { background: #fff; color: var(--accent); } }
 .round:active { background: #fff; color: var(--accent); }
 
+/* ---------- Partners ---------- */
+.partners { padding-block: calc(var(--pad-y) * .7); background: var(--bg); }
+.partners__title { font-weight: var(--w-bold); font-size: clamp(1rem, 1.5vw, 1.25rem); margin-bottom: clamp(1rem, 3vh, 2rem); }
+/* The strip scrolls sideways on its own, forever: the list is there twice (the second copy is hidden from screen readers) and
+   slides left by exactly one copy, so the loop has no seam. It pauses under the pointer or keyboard focus. */
+.partners__marquee { overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); }
+.partners__grid { list-style: none; padding: 0; display: flex; align-items: center; width: max-content; animation: partners-scroll 32s linear infinite; }
+.partners__grid li { flex: none; width: clamp(8rem, 17vw, 14rem); padding-right: clamp(1.5rem, 3vw, 3rem); }
+.partners__grid a { display: flex; align-items: center; justify-content: center; height: clamp(4.5rem, 10vw, 8.1rem); transition: transform .3s var(--ease); } /* no box: the logo fills its cell */
+.partners__grid img { max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; }
+.partners__marquee:hover .partners__grid, .partners__marquee:focus-within .partners__grid { animation-play-state: paused; }
+@keyframes partners-scroll { to { transform: translateX(-50%); } }
+@media (hover: hover) { .partners__grid a:hover { transform: translateY(-3px); } }
+
+/* ---------- Questions ---------- */
+.faq--page { padding-top: calc(var(--pad-y) + 3rem); }
+.faq--page .faq__grid > h1 { position: sticky; top: 6rem; }
+.faq__grid { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: clamp(2rem, 6vw, 6rem); align-items: start; }
+.faq__list { border-top: 1px solid var(--ink); }
+.faq details { border-bottom: 1px solid var(--ink); }
+.faq summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 1.5rem; padding: clamp(.8rem, 1.8vh, 1.2rem) 0; font-weight: var(--w-bold); font-size: clamp(1rem, 1.4vw, 1.2rem); }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: "+"; font-weight: var(--w-thin); font-size: 1.8rem; line-height: 1; transition: transform .3s var(--ease); }
+.faq details[open] summary::after { transform: rotate(45deg); }
+@media (hover: hover) { .faq summary:hover { color: var(--rosso); } }
+.faq details p { color: var(--muted); max-width: 42em; padding-bottom: clamp(.9rem, 2vh, 1.4rem); }
+
 /* ---------- Contact ---------- */
 /* Little space under the form: "Who's hungry?" follows straight after it. */
 .contact { padding-bottom: clamp(1.5rem, 3vh, 2.5rem); }
@@ -321,6 +350,7 @@ section[id], footer[id] { scroll-margin-top: 4.5rem; }
 /* The details: thin type, small, hairline-ruled. */
 .details { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 1.75rem 2.5rem; max-width: var(--max); margin: 0 auto; padding-top: 1.5rem; border-top: 1px solid rgba(242, 244, 230, .25); font-weight: 300; font-size: .92rem; line-height: 1.65; }
 .details__h { font-size: .68rem; letter-spacing: .16em; text-transform: uppercase; color: var(--sand); margin-bottom: .5rem; font-weight: var(--w-bold); }
+.details address { font-style: normal; }
 .details a { text-decoration: none; }
 .details a:hover { color: var(--sand); }
 .details__col:nth-child(2) p { display: flex; flex-wrap: wrap; gap: 0 1.1rem; }
@@ -343,8 +373,9 @@ section[id], footer[id] { scroll-margin-top: 4.5rem; }
 /* ---------- Small screens ---------- */
 @media (max-width: 960px) {
   .nav__links { display: none; }
-  .band__grid, .mhead__row, .mcat__grid, .contact__grid, .menu__grid, .testimonials__grid, .services__head { grid-template-columns: 1fr; }
+  .band__grid, .faq__grid, .mhead__row, .mcat__grid, .contact__grid, .menu__grid, .testimonials__grid, .services__head { grid-template-columns: 1fr; }
   .about__grid { grid-template-columns: 1fr; }
+  .faq--page .faq__grid > h1 { position: static; }
   .about__year { position: static; }
   .menu__head { position: static; }
   .serve { --w: min(64vw, 40vh, 420px); }
@@ -363,7 +394,7 @@ section[id], footer[id] { scroll-margin-top: 4.5rem; }
 /* Phones: the hero line and buttons sit between the logo and the cloche (hero.js sets --cta-top and leaves the room). */
 @media (max-width: 699px) {
   .hero__cta { top: var(--cta-top, 55%); bottom: auto; flex-direction: column; align-items: center; text-align: center; gap: .75rem; }
-  .hero__line { max-width: none; font-size: 1.35rem; }
+  .hero__line { max-width: 15em; font-size: 1.3rem; }
   .hero__actions { justify-content: center; }
 }
 @media (max-width: 560px) {
@@ -380,5 +411,8 @@ section[id], footer[id] { scroll-margin-top: 4.5rem; }
   .js .reveal { opacity: 1; transform: none; transition: none; }
   .w > span { transform: none; transition: none; }
   .hero__cta { animation: none; }
+  .partners__marquee { overflow-x: auto; -webkit-mask-image: none; mask-image: none; }
+  .partners__grid { animation: none; }
+  .partners__grid li[aria-hidden] { display: none; }
   .btn { translate: none; }
 }

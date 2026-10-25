@@ -151,7 +151,7 @@
   const FOOT_Y = 0.93;       // the plate's base sits at 93% of the viewport height
   const LOGO_BOTTOM = 160;   // bottom of "catering" (descenders included) in logo units
   const KNOB_CLEARANCE = 12; // px of clear space between "catering" and the top of the lid's knob
-const CTA_ROOM = 140;      // on phones: the same gap, with the hero line and buttons in it
+const CTA_ROOM = 175;      // on phones: the same gap, with the hero line and buttons in it
   plate.style.clipPath = `inset(${ART.split * 100}% 0 0 0)`;
   dome.style.clipPath = `inset(0 0 ${(1 - ART.split) * 100}% 0)`;
   dome.style.transformOrigin = '50% 64%'; // the lid rocks about its rim
