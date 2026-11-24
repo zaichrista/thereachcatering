@@ -16,7 +16,6 @@
   addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, { passive: true });
   addEventListener('resize', onScroll);
 
-  document.getElementById('year').textContent = new Date().getFullYear();
   onScroll();
 })();
 

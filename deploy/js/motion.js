@@ -139,7 +139,7 @@
   // --- Scroll-linked updates (one rAF-throttled pass) -----------------------------------------
   const nav = $('.nav');
   const progress = $('#progress');
-  const darkSections = $$('.band, .testimonials, .landing, .footer');
+  const darkSections = $$('.band, .xstage, .hero, .fromto, .testimonials, .contact, .hungry-sec, .landing, .footer');
   const accentSection = $('.testimonials');
   const heroSection = $('.hero');
   let lastScroll = scrollY, ticking = false;
@@ -151,7 +151,7 @@
     // ---- reads (one layout) ----
     const max = document.documentElement.scrollHeight - vh;
     const probe = nav.offsetHeight / 2;
-    const behind = darkSections.some((el) => { const r = el.getBoundingClientRect(); return r.top <= probe && r.bottom > probe; });
+    const behind = darkSections.some((el) => { if ((el.classList.contains('fromto') || el.classList.contains('hero')) && !document.documentElement.classList.contains('is-red')) return false; const r = el.getBoundingClientRect(); return r.top <= probe && r.bottom > probe; });
     const onAccent = !!accentSection && (() => { const r = accentSection.getBoundingClientRect(); return r.top <= probe && r.bottom > probe; })();
     const pastHero = !heroSection || heroSection.getBoundingClientRect().bottom <= nav.offsetHeight;
     const lr = !reduced && serve ? serve.getBoundingClientRect() : null;

@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Family-Run Mediterranean Caterers in Hammersmith | The Reach</title>
-  <meta name="description" content="Family-run Mediterranean caterers in Hammersmith. We cater to all needs: corporate events, weddings and private parties across London. Request a proposal.">
+  <meta name="description" content="Mediterranean caterers We cater to all needs: corporate events, weddings and private parties across London. Request a proposal.">
   <link rel="canonical" href="https://www.thereachcatering.com/">
   <meta name="theme-color" content="#C8102E">
   <link rel="icon" href="favicon.png" type="image/png" sizes="256x256">
@@ -119,11 +119,11 @@
   <!-- Adobe Fonts kit nyc5qch: Sets Grotesk M. Allowed domains are managed at fonts.adobe.com > Web Projects -->
   <link rel="stylesheet" href="https://use.typekit.net/nyc5qch.css">
   <link rel="preload" as="image" href="images/cloche-cobalt.webp" type="image/webp">
-  <link rel="stylesheet" href="css/site.css?v=20261025j">
+  <link rel="stylesheet" href="css/site.css?v=20261124a">
   <!-- 'is-loading' locks scrolling and hides the nav while the hero loader plays (hero.js removes it). The timeout is a
        safety net so the page can never stay locked. -->
   <script>
-    document.documentElement.classList.add('js', 'is-loading');
+    document.documentElement.classList.add('js');
     // Mobile browsers restore the old scroll position after load; with the page locked for the loader that made it jump
     // part-way through. The loader always starts from the top (a #section link still goes straight to its section).
     if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
@@ -136,12 +136,9 @@
 
   <!-- ===== Navigation (slides away as you scroll down, back as you scroll up) ===== -->
   <header class="nav" id="top">
-    <a class="nav__brand" href="#hero" aria-label="The Reach Catering, home">REACH</a>
-    <nav class="nav__links" aria-label="Main">
-      <a href="#services">Services</a>
+        <nav class="nav__links" aria-label="Main">
       <a href="menus.html">Menus</a>
-      <a href="#testimonials">Testimonials</a>
-      <a href="#about">About Us</a>
+      <a href="about.html">About Us</a>
     </nav>
     <a class="btn btn--small" href="#contact">Request a proposal</a>
   </header>
@@ -151,84 +148,167 @@
        (the second section covers it), and lets it travel up with the page at the very end: no scripting on scroll, so it can't
        lag or jump on phones. (The lid lives in the hero and scrolls with it.) ===== -->
   <div class="plate-track">
-  <!-- Hero backdrop (full window, behind the plate). Yellow for now. For a photo, add inside it:
-         <img src="images/hero.jpg" alt="" fetchpriority="high">
-       For a video (muted + playsinline is what lets it autoplay on phones; keep it short and compressed, ideally under ~5 MB):
-         <video src="images/hero.mp4" poster="images/hero.jpg" autoplay muted loop playsinline preload="auto"></video>
-       Both fill the window (object-fit: cover). The red logo needs contrast: if the footage is busy, darken or lighten it. -->
-  <div class="hero-bg" aria-hidden="true"></div>
-  <div class="plate-layer" aria-hidden="true">
-    <div id="plate-shadow" class="cl-shadow"></div>
-    <img id="plate" class="cl-img" alt="" width="1200" height="800" decoding="async" src="images/cloche-cobalt.webp">
-  </div>
-
   <main id="main">
     <!-- ===== Hero: the animated logo. The cloche is part of this moment. ===== -->
     <section class="hero" id="hero" aria-labelledby="hero-title">
-      <img id="lid" class="cl-img" alt="" aria-hidden="true" src="images/cloche-cobalt.webp">
-      <svg id="logo" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
-        <!-- Paths are in "ending point" coordinates (reach ending point.svg). R, E, C, H are drawn by hero.js. -->
-        <g id="logo-g">
-          <path id="A" d="M160.71,45.49h2.2l28.6,79.99h-2.3l-8.1-22.7h-38.7l-8.1,22.7h-2.2l28.6-79.99ZM180.31,100.43l-18.5-51.99-18.6,51.99h37.1Z"/>
-          <path id="R"/><path id="E"/><path id="C"/><path id="H"/>
-          <text id="the" transform="translate(18.51 37.57)" opacity="0">the</text>
-          <text id="catering" transform="translate(322.31 152.69)" text-anchor="end" opacity="0">catering</text>
-        </g>
-        <!-- Loader: "A class [service / food / events]" with the percentage underneath. Positioned by hero.js. -->
-        <defs><clipPath id="pre-clip"><rect id="pre-clip-rect" x="0" y="0" width="0" height="0"/></clipPath></defs>
-        <g id="pre" opacity="0">
-          <text id="pre-class" class="pre-t">-class</text>
-          <g clip-path="url(#pre-clip)">
-            <text id="pre-w1" class="pre-word" text-anchor="middle" opacity="0"></text>
-            <text id="pre-w2" class="pre-word" text-anchor="middle" opacity="0"></text>
-          </g>
-          <text id="pre-pct" class="pre-pct" text-anchor="middle">0%</text>
-        </g>
-      </svg>
-      <!-- The promise and the two ways forward: act (rosso button) or explore (plain link). Fades in once the logo has played. -->
-      <div class="hero__cta">
-        <h1 class="hero__line" id="hero-title">Family-run Mediterranean caterers in Hammersmith.</h1>
-        <div class="hero__actions">
-          <a class="btn" href="#contact">Request a proposal</a>
-          <a class="link" href="menus.html">See our menus</a>
+      <!-- Framed hero (after defoodtruckclub.nl): a giant title, a pill, and a rounded photo whose top-right corner is notched out for the last word. -->
+      <h1 class="visually-hidden" id="hero-title">Family-run Mediterranean caterers in Hammersmith.</h1>
+      <div class="hf">
+        <div class="hf__img">
+          <img src="images/hero.jpg" alt="Platters of canapés, sliders and tartlets laid out on a black-clothed table at an event" width="2400" height="1306" fetchpriority="high" decoding="async">
+          <div class="hf__notch">
+            <svg class="hf__logo" viewBox="10 10 320 150" focusable="false" xmlns="http://www.w3.org/2000/svg"><title>The Reach Catering</title><path d="M160.71,45.49h2.2l28.6,79.99h-2.3l-8.1-22.7h-38.7l-8.1,22.7h-2.2l28.6-79.99ZM180.31,100.43l-18.5-51.99-18.6,51.99h37.1Z"/><path d="M18.51,45.49h24.2c4.8,0,8.98.86,12.55,2.59,3.57,1.73,6.32,4.18,8.25,7.35,1.93,3.18,2.9,6.8,2.9,10.88,0,5.57-1.67,10.14-5,13.7-3.33,3.57-7.4,5.75-12.2,6.53,4.07.55,7.47,2.12,10.2,4.71,2.73,2.59,4.47,6.39,5.2,11.41l1.7,12.35c.6,4.39,1.37,7.88,2.3,10.47h-2.3c-.93-2.67-1.67-6.04-2.2-10.12l-1.5-11.76c-.67-5.49-2.68-9.49-6.05-12-3.37-2.51-8.18-3.76-14.45-3.76h-21.4v37.64h-2.2V45.49ZM41.31,85.49c7.13,0,12.72-1.69,16.75-5.06,4.03-3.37,6.05-8.04,6.05-14s-1.97-10.45-5.9-13.7c-3.93-3.25-9.53-4.88-16.8-4.88h-20.7v37.64h20.6Z"/><path d="M82.81,45.49h42.3v2.35h-40.1v35.76h36.9v2.35h-36.9v37.17h41.2v2.35h-43.4V45.49Z"/><path d="M210.46,122.13c-4.83-3.02-8.63-7.61-11.4-13.76-2.77-6.16-4.15-13.78-4.15-22.88s1.38-16.72,4.15-22.88c2.77-6.15,6.57-10.74,11.4-13.76,4.83-3.02,10.42-4.53,16.75-4.53,7.67,0,14.13,2.25,19.4,6.76,5.27,4.51,8.5,11.47,9.7,20.88h-2.3c-1.13-8.23-4.08-14.49-8.85-18.76-4.77-4.27-10.78-6.41-18.05-6.41-5.93,0-11.13,1.43-15.6,4.29-4.47,2.86-7.95,7.2-10.45,13-2.5,5.8-3.75,12.94-3.75,21.41s1.25,15.61,3.75,21.41c2.5,5.8,6,10.14,10.5,13,4.5,2.86,9.72,4.29,15.65,4.29,7.47,0,13.63-2.23,18.5-6.7,4.87-4.47,7.8-10.98,8.8-19.53h2.4c-1.07,9.33-4.25,16.45-9.55,21.35-5.3,4.9-12.02,7.35-20.15,7.35-6.33,0-11.92-1.51-16.75-4.53Z"/><path d="M320.11,85.96h-48.3v39.52h-2.2V45.49h2.2v38.11h48.3v-38.11h2.2v79.99h-2.2v-39.52Z"/><text x="18.51" y="37.57">the</text><text x="322.31" y="152.69" text-anchor="end">catering</text></svg>
+            <span class="hf__corner hf__corner--lt"></span><span class="hf__corner hf__corner--rb"></span>
+          </div>
+          <div class="hf__over">
+            <div class="hero__actions">
+              <a class="btn" href="#contact">Request a proposal</a>
+              <a class="link" href="menus.html">See our menus</a>
+            </div>
+            <p class="hf__tag" aria-hidden="true"><span>Mediterranean</span> <b>caterers</b><br><span>in Hammersmith.</span></p>
+          </div>
         </div>
       </div>
     </section>
 
+    <!-- The strip and the photo section share a wrapper so the strip can stick to the top (as the photo's header) while the photo starts to grow. -->
+    <div class="xwrap">
+    <!-- ===== From our table to yours: a strip that slides across as you scroll, a cloche riding it (js/fromto.js). ===== -->
+    <section class="fromto" aria-labelledby="fromto-title">
+      <h2 class="visually-hidden" id="fromto-title">From our table to yours</h2>
+      <div class="fromto__strip" aria-hidden="true">
+        <div class="fromto__panel"><span class="cloche" aria-hidden="true"><img class="cloche__plate" src="images/cloche-cobalt.webp" alt=""><img class="cloche__dome" src="images/cloche-cobalt.webp" alt=""></span><span class="fromto__t">To yours</span></div>
+        <div class="fromto__panel"><span class="cloche" aria-hidden="true"><img class="cloche__plate" src="images/cloche-cobalt.webp" alt=""><img class="cloche__dome" src="images/cloche-cobalt.webp" alt=""></span><span class="fromto__t">From our table</span></div>
+      </div>
+    </section>
+
+    <!-- ===== Expanding image: a small frame in the centre that grows to fill the window as you scroll, stays for a few screens, then shrinks back (js/stage.js).
+         To use video, replace the <img> with: <video src="images/stage.mp4" poster="images/hero.jpg" autoplay muted loop playsinline preload="metadata"></video> ===== -->
+    <section class="xstage" id="stage" aria-label="Our food at an event">
+      <!-- The scene is a see-through box laid over the whole section; the pin sticks inside it. Its bottom edge is nudged by stage.js so the pin lets go at the same instant as the form. -->
+      <div class="xstage__scene">
+      <div class="xstage__pin">
+        <figure class="xstage__media">
+          <video src="images/stage.mp4" poster="images/stage-poster.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Platters of canapés, sliders and tartlets laid out on a table at an event"></video>
+          <span class="xstage__scrim xstage__scrim--l" aria-hidden="true"></span>
+          <span class="xstage__scrim xstage__scrim--r" aria-hidden="true"></span>
+        </figure>
+
+        <!-- Content layered over the photo: two panels that fade in and out in turn while the photo is full-window (js/stage.js). -->
+        <div class="xstage__over">
+          <article class="xpanel" aria-labelledby="xp-who">
+            <p class="xpanel__eyebrow">Who we are</p>
+            <h2 class="xpanel__h" id="xp-who">A <b>family-run</b> Mediterranean caterer, <b>since 2002.</b></h2>
+            <ul class="xpanel__list">
+              <li><h3>Custom Menus</h3><p>Bespoke Mediterranean menus</p></li>
+              <li><h3>Professional Staff</h3><p>Experienced chefs &amp; event staff</p></li>
+              <li><h3>Complete Event Catering</h3><p>Equipment, tableware &amp; staffing</p></li>
+            </ul>
+            <a class="btn" href="about.html">About us</a>
+          </article>
+          <article class="xpanel xpanel--r" aria-labelledby="xp-what">
+            <p class="xpanel__eyebrow">What we cater</p>
+            <h2 class="xpanel__h" id="xp-what">Corporate events, <b>weddings</b> and private celebrations.</h2>
+            <ul class="xpanel__list xpanel__list--4">
+              <li><h3>Corporate Catering</h3><p>Conferences, lunches &amp; receptions in London</p></li>
+              <li><h3>Wedding Catering</h3><p>Mediterranean wedding catering in London</p></li>
+              <li><h3>Private Celebrations</h3><p>Birthdays, anniversaries &amp; family parties</p></li>
+              <li><h3>Bespoke Catering</h3><p>Custom Mediterranean menus, fully staffed</p></li>
+            </ul>
+            <a class="btn" href="menus.html">See our menus</a>
+          </article>
+        </div>
+
+        <!-- Shown as the photo shrinks back: the words sit above and below the small frame. -->
+        <h2 class="visually-hidden">Planning your next event?</h2>
+        <p class="xq xq--top" aria-hidden="true">Planning your</p>
+        <p class="xq xq--bot" aria-hidden="true">next event?</p>
+
+        <!-- "Customer certified" badge: a solid gold five-pointed star ringed by slowly turning text. It slides in from the right, beside the question, as the question
+             travels to the top. The star spins while the page scrolls or the badge is hovered (js/badge.js). Leads to the testimonials. -->
+        <a class="badge" href="#testimonials" aria-label="Customer certified: see what our clients say">
+          <svg viewBox="0 0 200 200" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+            <defs><path id="badge-ring" d="M100,100 m-77,0 a77,77 0 1,1 154,0 a77,77 0 1,1 -154,0"/></defs>
+            <g class="badge__ring"><text><textPath href="#badge-ring" textLength="476" lengthAdjust="spacing">CUSTOMER CERTIFIED &#8226; CUSTOMER CERTIFIED &#8226; </textPath></text></g>
+            <g class="badge__star"><polygon points="100,56 110.7,86.6 143.1,87.4 117.3,107 126.7,138 100,119.8 73.3,138 82.7,107 56.9,87.4 89.3,86.6"/></g>
+          </svg>
+        </a>
+      </div>
+      </div><!-- /xstage__scene -->
+
+      <!-- The scroll distance the photo section runs over (the pin above stays stuck to the window the whole time). -->
+      <div class="xstage__run" aria-hidden="true"></div>
+
+      <!-- ===== The enquiry form (submitted to Wix Forms by js/forms.js). It rises into view beneath the squished question, then sticks with it for half a scroll. ===== -->
+      <section class="contact" id="contact" aria-labelledby="contact-title">
+        <h2 class="contact__sub" id="contact-title">Request a catering proposal</h2>
+        <form id="contact-form" class="form" novalidate>
+          <div class="form__grid">
+            <label class="field"><span>Full Name *</span><input name="name" autocomplete="name" required maxlength="100"></label>
+            <label class="field"><span>Phone *</span><input name="phone" type="tel" autocomplete="tel" required maxlength="40"></label>
+            <label class="field field--wide"><span>Email *</span><input name="email" type="email" autocomplete="email" required maxlength="200"></label>
+            <label class="field field--event"><span>Event type</span><select name="event">
+              <option value="">Choose one</option>
+              <option>Corporate event</option><option>Wedding</option><option>Private celebration</option><option>Bespoke / other</option>
+            </select></label>
+            <label class="field field--date"><span>Event date</span><input name="date" type="date" autocomplete="off"></label>
+            <label class="field field--guests"><span>Guests</span><input name="guests" type="number" inputmode="numeric" min="1" max="5000" autocomplete="off"></label>
+            <label class="field field--wide"><span>Message</span><textarea name="message" rows="3" maxlength="2900"></textarea></label>
+          </div>
+          <!-- Honeypot: humans never see this. forms.js silently drops submissions where it is filled. -->
+          <input type="hidden" name="menu"><!-- set when you arrive from a menu's "Enquire for pricing" -->
+          <div class="hp" aria-hidden="true"><label>Website <input name="website" tabindex="-1" autocomplete="off"></label></div>
+          <p class="form__status" id="form-status" role="status" aria-live="polite"></p>
+          <!-- The button sits exactly midway between the Message line above and the bottom of the section. -->
+          <div class="form__cta">
+            <button class="btn" type="submit">Send request</button>
+            <p class="form__note">We reply within one working day.</p>
+          </div>
+        </form>
+
+      </section>
+
+      <!-- Half a screen of extra scroll: the pinned question and the stuck form hold still together before the section lets go. -->
+      <div class="xstage__tail" aria-hidden="true"></div>
+    </section>
+    </div><!-- /xwrap -->
+
+    <!-- PARKED for now (out of the page, not deleted): Our Services, Our Catering Menus and "Every Event Is Unique".
+         To bring them back, cut the <template> tags off and leave the sections here, between the stage and Testimonials. -->
+    <template id="parked-sections">
     <!-- ===== Our Services: the four kinds of event. Each card: act (enquire, with the event type pre-selected) or explore (its menu). ===== -->
     <section class="section services" id="services" aria-labelledby="services-title">
       <div class="wrap">
         <div class="services__head">
           <h2 class="mega mega--sm" id="services-title" data-split>We cater to all needs: corporate events, weddings and private celebrations</h2>
-          <p class="body reveal">As a family-run Mediterranean caterer in Hammersmith, we look after every detail, from elegant canapés and generous buffets to beautifully presented dining, so you can enjoy the occasion.</p>
         </div>
         <div class="stack">
           <article class="scard scard--olive">
             <span class="scard__n" aria-hidden="true">01</span>
+            <figure class="ph scard__ph" data-ph="Corporate catering" aria-hidden="true"><!-- Photo goes here: <img src="images/FILE.jpg" alt="Corporate catering in Hammersmith: a Mediterranean working lunch buffet laid out for a London business event" loading="lazy" decoding="async" width="1200" height="800"> --></figure>
             <h3>Corporate Catering</h3>
-            <p class="item__sub">Business Done Beautifully</p>
-            <p>Corporate catering in Hammersmith and across London: conferences, networking receptions, working lunches and breakfast meetings, catered to your schedule and guest numbers.</p>
+            <p class="item__sub">Conferences, lunches &amp; receptions in London</p>
             <div class="scard__actions"><a class="btn btn--small" href="#contact" data-event="Corporate event">Enquire<span class="visually-hidden"> about corporate events</span></a><a class="link" href="menus.html#breakfast">See the menu<span class="visually-hidden"> for corporate events</span></a></div>
           </article>
           <article class="scard scard--ink">
             <span class="scard__n" aria-hidden="true">02</span>
+            <figure class="ph scard__ph" data-ph="Wedding catering" aria-hidden="true"><!-- Photo goes here: <img src="images/FILE.jpg" alt="Mediterranean wedding catering in London: canapés and a seated wedding breakfast served by our team" loading="lazy" decoding="async" width="1200" height="800"> --></figure>
             <h3>Wedding Catering</h3>
-            <p class="item__sub">Your Day, Beautifully Served</p>
-            <p>Mediterranean wedding catering from a family-run team: canapé receptions to seated dining, shaped around your day, your guests and their dietary requirements.</p>
+            <p class="item__sub">Mediterranean wedding catering in London</p>
             <div class="scard__actions"><a class="btn btn--small" href="#contact" data-event="Wedding">Enquire<span class="visually-hidden"> about weddings</span></a><a class="link" href="menus.html#dinners">See the menu<span class="visually-hidden"> for weddings</span></a></div>
           </article>
           <article class="scard scard--pale">
             <span class="scard__n" aria-hidden="true">03</span>
+            <figure class="ph scard__ph" data-ph="Private celebrations" aria-hidden="true"><!-- Photo goes here: <img src="images/FILE.jpg" alt="Private party catering in London: a sharing feast for a birthday celebration" loading="lazy" decoding="async" width="1200" height="800"> --></figure>
             <h3>Private Celebrations</h3>
-            <p class="item__sub">Every Occasion, Catered</p>
-            <p>Birthdays, anniversaries and family gatherings, from relaxed sharing feasts to something more formal. Whatever the occasion, we cater to your guests' needs.</p>
+            <p class="item__sub">Birthdays, anniversaries &amp; family parties</p>
             <div class="scard__actions"><a class="btn btn--small" href="#contact" data-event="Private celebration">Enquire<span class="visually-hidden"> about private celebrations</span></a><a class="link" href="menus.html#lunches">See the menu<span class="visually-hidden"> for private celebrations</span></a></div>
           </article>
           <article class="scard scard--white">
             <span class="scard__n" aria-hidden="true">04</span>
+            <figure class="ph scard__ph" data-ph="Bespoke catering" aria-hidden="true"><!-- Photo goes here: <img src="images/FILE.jpg" alt="Bespoke Mediterranean catering: chefs plating a custom menu at a London event" loading="lazy" decoding="async" width="1200" height="800"> --></figure>
             <h3>Bespoke Catering</h3>
-            <p class="item__sub">Something Different</p>
-            <p>Our chefs create bespoke menus inspired by Mediterranean and international flavours, with equipment, tableware and staffing arranged for you.</p>
+            <p class="item__sub">Custom Mediterranean menus, fully staffed</p>
             <div class="scard__actions"><a class="btn btn--small" href="#contact" data-event="Bespoke / other">Enquire<span class="visually-hidden"> about bespoke catering</span></a><a class="link" href="menus.html">See the menu<span class="visually-hidden"> for bespoke catering</span></a></div>
           </article>
         </div>
@@ -240,10 +320,7 @@
       <div class="wrap menu__grid">
         <div class="menu__head">
         <h2 class="mega mega--sm" id="menu-title" data-split>Mediterranean-inspired catering menus for every occasion</h2>
-        <div class="intro reveal">
-          <p class="body">Our catering menus bring together fresh ingredients, Mediterranean and international flavours and beautiful presentation, prepared by a family-run team in Hammersmith.</p>
-          <p class="body">Whether you're planning a business conference, wedding, private celebration or networking reception, we cater to your occasion, your preferences and your dietary requirements.</p>
-        </div>
+        <figure class="ph menu__ph" data-ph="Catering menus" aria-hidden="true"><!-- Photo goes here: <img src="images/FILE.jpg" alt="Mediterranean-inspired catering menus: a spread of mezze, grilled dishes and desserts prepared in Hammersmith" loading="lazy" decoding="async" width="1200" height="800"> --></figure>
         <a class="btn reveal" href="menus.html">See our menus</a>
         </div>
 
@@ -255,8 +332,7 @@
               <span class="cloche acc__icon" aria-hidden="true"><img class="cloche__plate" src="images/cloche-cobalt.webp" alt=""><img class="cloche__dome" src="images/cloche-cobalt.webp" alt=""></span>
             </button></h3>
             <div class="acc__panel" id="m1" role="region" aria-labelledby="m1-btn"><div class="acc__inner">
-              <p class="item__sub">The Perfect Start to Every Event</p>
-              <p class="acc__desc">Breakfast and meeting catering in Hammersmith and across London. Keep your guests refreshed and energised with our breakfast selections, tea and coffee services and meeting refreshments, from morning meetings to full-day conferences.</p>
+              <p class="item__sub">Breakfast &amp; meeting catering, Hammersmith</p>
               <p class="acc__more"><a class="btn btn--small" href="#contact" data-menu="Breakfast &amp; Meetings">Enquire for pricing<span class="visually-hidden">: Breakfast &amp; Meetings</span></a><a class="link" href="menus.html#breakfast">See this menu<span class="visually-hidden">: Breakfast &amp; Meetings</span></a></p>
             </div></div>
           </article>
@@ -267,8 +343,7 @@
               <span class="cloche acc__icon" aria-hidden="true"><img class="cloche__plate" src="images/cloche-cobalt.webp" alt=""><img class="cloche__dome" src="images/cloche-cobalt.webp" alt=""></span>
             </button></h3>
             <div class="acc__panel" id="m2" role="region" aria-labelledby="m2-btn"><div class="acc__inner">
-              <p class="item__sub">Generous, Relaxed &amp; Full of Flavour</p>
-              <p class="acc__desc">From Mediterranean-inspired spreads to international favourites, our working lunches and sharing feasts bring people together over delicious food. Ideal for corporate lunches, family celebrations and larger gatherings, with flexible options to suit your event.</p>
+              <p class="item__sub">Mediterranean sharing feasts &amp; buffets</p>
               <p class="acc__more"><a class="btn btn--small" href="#contact" data-menu="Working Lunches &amp; Sharing Feasts">Enquire for pricing<span class="visually-hidden">: Working Lunches &amp; Sharing Feasts</span></a><a class="link" href="menus.html#lunches">See this menu<span class="visually-hidden">: Working Lunches &amp; Sharing Feasts</span></a></p>
             </div></div>
           </article>
@@ -279,8 +354,7 @@
               <span class="cloche acc__icon" aria-hidden="true"><img class="cloche__plate" src="images/cloche-cobalt.webp" alt=""><img class="cloche__dome" src="images/cloche-cobalt.webp" alt=""></span>
             </button></h3>
             <div class="acc__panel" id="m3" role="region" aria-labelledby="m3-btn"><div class="acc__inner">
-              <p class="item__sub">Small Bites, Big Impressions</p>
-              <p class="acc__desc">Perfect for cocktail receptions, networking events and celebrations. Discover an inviting selection of elegant canapés, creative finger food and beautifully presented bowl dishes, designed for effortless social dining.</p>
+              <p class="item__sub">Canapé catering for London receptions</p>
               <p class="acc__more"><a class="btn btn--small" href="#contact" data-menu="Canapés &amp; Working Receptions">Enquire for pricing<span class="visually-hidden">: Canapés &amp; Working Receptions</span></a><a class="link" href="menus.html#canapes">See this menu<span class="visually-hidden">: Canapés &amp; Working Receptions</span></a></p>
             </div></div>
           </article>
@@ -291,8 +365,7 @@
               <span class="cloche acc__icon" aria-hidden="true"><img class="cloche__plate" src="images/cloche-cobalt.webp" alt=""><img class="cloche__dome" src="images/cloche-cobalt.webp" alt=""></span>
             </button></h3>
             <div class="acc__panel" id="m4" role="region" aria-labelledby="m4-btn"><div class="acc__inner">
-              <p class="item__sub">Beautifully Served, Thoughtfully Prepared</p>
-              <p class="acc__desc">For occasions that call for a more traditional dining experience, we offer bespoke two- and three-course menus, from elegant starters to indulgent desserts. We can also coordinate equipment, tableware and staffing for a full service event.</p>
+              <p class="item__sub">Seated dinners &amp; full-service catering</p>
               <p class="acc__more"><a class="btn btn--small" href="#contact" data-menu="Corporate Dinners &amp; Full Service Events">Enquire for pricing<span class="visually-hidden">: Corporate Dinners &amp; Full Service Events</span></a><a class="link" href="menus.html#dinners">See this menu<span class="visually-hidden">: Corporate Dinners &amp; Full Service Events</span></a></p>
             </div></div>
           </article>
@@ -305,13 +378,12 @@
       <div class="wrap band__grid">
         <div class="band__text">
           <h2 class="mega mega--light" id="unique-title" data-split>Every event is unique, and so is every menu</h2>
-          <p class="reveal">All our menus can be tailored to suit your guest numbers, dietary requirements, style of service and budget. As a family-run caterer, we take the time to understand what your event needs.</p>
-          <p class="reveal">Contact our Hammersmith team to discuss your event and receive a personalised catering proposal.</p>
           <a class="btn reveal" href="#contact">Request a proposal</a>
         </div>
         <div class="cloche serve" id="serve" aria-hidden="true"><img class="cloche__plate" src="images/cloche-cobalt.webp" alt=""><img class="cloche__dome" src="images/cloche-cobalt.webp" alt=""></div>
       </div>
     </section>
+    </template>
 
     <!-- ===== Testimonials: a swipeable slider ===== -->
     <section class="section testimonials" id="testimonials" aria-labelledby="testimonials-title">
@@ -370,72 +442,44 @@
       </div>
     </section>
 
+    <!-- PARKED for now (out of the page, not deleted): "About Us" and how we work. Its content is moving into the expanding-image section. -->
+    <template id="parked-about">
     <!-- ===== About Us (left) and how we work (right) ===== -->
     <section class="section section--alt about" id="about" aria-labelledby="about-title">
       <div class="wrap about__grid">
         <div class="about__text">
           <div class="about__year" aria-hidden="true"><span id="year-big" data-count="2002">2002</span></div>
-          <h2 class="mega mega--sm" id="about-title" data-split>A family-run Mediterranean caterer</h2>
-          <p class="lede reveal">The Reach Catering is a family-run hospitality and catering business based in Hammersmith, in the Fulham Reach area of London, with roots in hospitality dating back to 2002.</p>
-          <p class="body reveal">From corporate events and business gatherings to weddings, private celebrations and special occasions, we cater to all needs. We believe every event deserves delicious Mediterranean-inspired food, thoughtful presentation and outstanding, personal service.</p>
-          <p class="body reveal">Whether you're hosting an intimate gathering or a large-scale event, our family is here to make every moment special.</p>
+          <h2 class="mega mega--sm" id="about-title" data-split>A Mediterranean caterer rooted in Fulham Reach</h2>
+          <p class="lede reveal">Cooking for London from our home in Fulham Reach, since 2002.</p>
+          <figure class="ph about__ph" data-ph="Our family team" aria-hidden="true"><!-- Photo goes here: <img src="images/FILE.jpg" alt="The Reach Catering team in Hammersmith, London, preparing Mediterranean food together" loading="lazy" decoding="async" width="1200" height="800"> --></figure>
           <a class="btn reveal" href="#contact">Request a proposal</a>
         </div>
         <ul class="how">
           <li class="reveal">
             <h3>Custom Menus</h3>
-            <p class="item__sub">Tailored to Your Taste</p>
-            <p>Every event is unique. Our chefs create bespoke menus inspired by Mediterranean and international flavours, from elegant canapés and sharing platters to beautifully prepared buffets and seated dining experiences.</p>
+            <p class="item__sub">Bespoke Mediterranean menus</p>
           </li>
           <li class="reveal">
             <h3>Professional Staff</h3>
-            <p class="item__sub">Service You Can Rely On</p>
-            <p>Our experienced chefs, hospitality staff and event supervisors ensure every occasion runs smoothly. From preparation to the final service, we take care of the details so you can enjoy your event.</p>
+            <p class="item__sub">Experienced chefs &amp; event staff</p>
           </li>
           <li class="reveal">
             <h3>Complete Event Catering</h3>
-            <p class="item__sub">From Planning to Presentation</p>
-            <p>More than just delicious food, we can coordinate the catering essentials, including equipment, tableware, staffing and service arrangements, creating a seamless experience from start to finish.</p>
+            <p class="item__sub">Equipment, tableware &amp; staffing</p>
           </li>
         </ul>
       </div>
     </section>
+    </template>
 
-    <!-- ===== Contact Us (submitted to Wix Forms by js/forms.js) ===== -->
-    <section class="section contact" id="contact" aria-labelledby="contact-title">
-      <div class="wrap contact__grid">
-        <div>
-          <h2 class="mega mega--sm" id="contact-title" data-split>Request a catering proposal</h2>
-          <p class="body reveal">Have a question or want to learn more about our catering services? Tell us about your occasion and what you need, from dietary requirements to guest numbers. We cater to all needs, and we reply within one working day with a personalised catering proposal.</p>
-        </div>
-        <form id="contact-form" class="form" novalidate>
-          <div class="form__grid">
-            <label class="field"><span>Full Name *</span><input name="name" autocomplete="name" required maxlength="100"></label>
-            <label class="field"><span>Phone *</span><input name="phone" type="tel" autocomplete="tel" required maxlength="40"></label>
-            <label class="field field--wide"><span>Email *</span><input name="email" type="email" autocomplete="email" required maxlength="200"></label>
-            <label class="field field--event"><span>Event type</span><select name="event">
-              <option value="">Choose one</option>
-              <option>Corporate event</option><option>Wedding</option><option>Private celebration</option><option>Bespoke / other</option>
-            </select></label>
-            <label class="field field--date"><span>Event date</span><input name="date" type="date" autocomplete="off"></label>
-            <label class="field field--guests"><span>Guests</span><input name="guests" type="number" inputmode="numeric" min="1" max="5000" autocomplete="off"></label>
-            <label class="field field--wide"><span>Message</span><textarea name="message" rows="4" maxlength="2900"></textarea></label>
-          </div>
-          <!-- Honeypot: humans never see this. forms.js silently drops submissions where it is filled. -->
-          <input type="hidden" name="menu"><!-- set when you arrive from a menu's "Enquire for pricing" -->
-          <div class="hp" aria-hidden="true"><label>Website <input name="website" tabindex="-1" autocomplete="off"></label></div>
-          <p class="form__status" id="form-status" role="status" aria-live="polite"></p>
-          <button class="btn" type="submit">Send request</button>
-          <p class="form__note">We reply within one working day.</p>
-        </form>
+    <!-- ===== "Who's hungry?" banner, after Partners and just before the footer ===== -->
+    <section class="section hungry-sec" aria-label="Who's hungry?">
+      <div class="wrap">
+        <p class="hungry" id="hungry">Who&rsquo;s hungry?</p>
+        <p class="hungry-sec__cta"><a class="btn" href="#contact">Request a proposal</a></p>
       </div>
     </section>
   </main>
-  <!-- ===== "Who's hungry?" — the fixed plate lands in the slot right under the words (it is the end of the plate track). ===== -->
-  <div class="landing">
-    <p class="hungry" id="hungry">Who&rsquo;s hungry?</p>
-    <div class="plate-slot" id="plate-slot" aria-hidden="true"></div>
-  </div>
   </div><!-- /plate-track -->
 
 
@@ -476,14 +520,22 @@
       <a href="https://www.thereachcatering.com/accessibility-statement" target="_blank" rel="noopener">Accessibility Statement</a>
       <a href="https://www.thereachcatering.com/terms-conditions" target="_blank" rel="noopener">Terms &amp; Conditions</a>
       <a href="https://www.thereachcatering.com/refund-policy" target="_blank" rel="noopener">Refund Policy</a>
-      <span>&copy; <span id="year">2026</span> The Reach Catering, family-run caterers in Hammersmith, London</span>
+      <span>&copy; 2026 ZC Studios</span>
     </p>
   </footer>
 
-  <script src="js/hero.js?v=20261025b"></script>
+  <!-- ===== Closing line: sits in the hero's background colour, tucked under the footer's rounded bottom edge ===== -->
+  <section class="closing" aria-label="Our promise">
+    <p class="closing__t"><span data-fit>Catering, done right.</span></p>
+  </section>
+
   <script src="js/main.js?v=20261025b"></script>
   <script type="module" src="js/forms.js"></script>
   <script src="js/slider.js?v=20261025a"></script>
+  <script src="js/fromto.js?v=20261123c"></script>
+  <script src="js/stage.js?v=20261123e"></script>
+  <script src="js/badge.js?v=20261123a"></script>
+  <script src="js/fit.js?v=20261124b"></script>
   <script src="js/motion.js?v=20261025b"></script>
 </body>
 </html>

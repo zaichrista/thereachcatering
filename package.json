@@ -12,7 +12,8 @@
     "dev": "node --watch --env-file-if-exists=.env src/server.js",
     "seed": "node --env-file-if-exists=.env src/seed.js",
     "test": "node --test",
-    "site": "node scripts/serve-site.mjs"
+    "site": "node scripts/serve-site.mjs",
+    "preview": "SITE_DIR=deploy node scripts/serve-site.mjs"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
